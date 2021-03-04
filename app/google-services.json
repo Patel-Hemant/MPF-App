@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "711662387287",
+    "firebase_url": "https://mpf-app-bdfe9-default-rtdb.firebaseio.com",
+    "project_id": "mpf-app-bdfe9",
+    "storage_bucket": "mpf-app-bdfe9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:711662387287:android:c0bae251796d15c13ce312",
+        "android_client_info": {
+          "package_name": "com.hemantpatel.mpfapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "711662387287-liidnsmjfofghh5vqfk7fja1h42r4kvd.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.hemantpatel.mpfapp",
+            "certificate_hash": "b378a8910ca65062db7430319f2ca9ead14bb2b2"
+          }
+        },
+        {
+          "client_id": "711662387287-3a6hvsknjomccnqg12g2qv9jk8al86iv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB6CBFIXUtknTgSHqVcUyYa_iav2Rgabxg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "711662387287-3a6hvsknjomccnqg12g2qv9jk8al86iv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
