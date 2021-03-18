@@ -36,7 +36,7 @@
             android:padding="20sp">
 
             <TextView
-                android:id="@+id/textView8"
+                android:id="@+id/detail_tab_prize"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Prize: 54000 Rs"
@@ -46,7 +46,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/textView9"
+                android:id="@+id/detail_tab_contact"
                 android:layout_width="0sp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
@@ -54,11 +54,11 @@
                 android:textColor="@color/mycolor1"
                 android:textSize="17sp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/textView8"
-                app:layout_constraintTop_toBottomOf="@+id/textView8" />
+                app:layout_constraintStart_toStartOf="@+id/detail_tab_prize"
+                app:layout_constraintTop_toBottomOf="@+id/detail_tab_prize" />
 
             <TextView
-                android:id="@+id/textView10"
+                android:id="@+id/detail_tab_address"
                 android:layout_width="0sp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
@@ -66,10 +66,11 @@
                 android:textColor="@color/mycolor1"
                 android:textSize="17sp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/textView9"
-                app:layout_constraintTop_toBottomOf="@+id/textView9" />
+                app:layout_constraintStart_toStartOf="@+id/detail_tab_contact"
+                app:layout_constraintTop_toBottomOf="@+id/detail_tab_contact" />
 
             <TextView
+                android:id="@+id/detail_tab_description"
                 android:layout_width="0sp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
@@ -77,8 +78,8 @@
                 android:textColor="@color/mycolor1"
                 android:textSize="17sp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/textView9"
-                app:layout_constraintTop_toBottomOf="@+id/textView10" />
+                app:layout_constraintStart_toStartOf="@+id/detail_tab_contact"
+                app:layout_constraintTop_toBottomOf="@+id/detail_tab_address" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

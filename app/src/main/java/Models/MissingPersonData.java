@@ -1,90 +1,113 @@
 package Models;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class MissingPersonData {
-    private String name;
-    private String age;
+public class MissingPersonData implements Serializable {
+    private String userId;
+    private String name;//
+    private String age;//
     private String gender;
-    private String address;
-    private String missing_date;
-    private String prize;
+    private String address;//
+    private String missing_date;//
+    private String prize;//
+    private String contacts;
     private ArrayList<String> photo_urls;
-    private ArrayList<ContactDetail> contacts;
+    private String description;//
 
-   public MissingPersonData(String name, String age, String gender, String address, String missing_date, String prize, ArrayList<String> photo_urls, ArrayList<ContactDetail> contacts) {
-      this.name = name;
-      this.age = age;
-      this.gender = gender;
-      this.address = address;
-      this.missing_date = missing_date;
-      this.prize = prize;
-      this.photo_urls = photo_urls;
-      this.contacts = contacts;
-   }
+    public MissingPersonData() {
+    }
 
+    public MissingPersonData(String userId, String name, String age, String gender, String address, String missing_date, String prize, String contacts, ArrayList<String> photo_urls, String description) {
+        this.userId = userId;
+        this.name = name;
+        this.age = age;
+        this.gender = gender;
+        this.address = address;
+        this.missing_date = missing_date;
+        this.prize = prize;
+        this.photo_urls = photo_urls;
+        this.description = description;
+        this.contacts = contacts;
+    }
 
-   public String getName() {
-      return name;
-   }
+    public String getUserId() {
+        return userId;
+    }
 
-   public void setName(String name) {
-      this.name = name;
-   }
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
 
-   public String getAge() {
-      return age;
-   }
+    public String getName() {
+        return name;
+    }
 
-   public void setAge(String age) {
-      this.age = age;
-   }
+    public void setName(String name) {
+        this.name = name;
+    }
 
-   public String getGender() {
-      return gender;
-   }
+    public String getAge() {
+        return age;
+    }
 
-   public void setGender(String gender) {
-      this.gender = gender;
-   }
+    public void setAge(String age) {
+        this.age = age;
+    }
 
-   public String getAddress() {
-      return address;
-   }
+    public String getGender() {
+        return gender;
+    }
 
-   public void setAddress(String address) {
-      this.address = address;
-   }
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
 
-   public String getMissing_date() {
-      return missing_date;
-   }
+    public String getAddress() {
+        return address;
+    }
 
-   public void setMissing_date(String missing_date) {
-      this.missing_date = missing_date;
-   }
+    public void setAddress(String address) {
+        this.address = address;
+    }
 
-   public String getPrize() {
-      return prize;
-   }
+    public String getMissing_date() {
+        return missing_date;
+    }
 
-   public void setPrize(String prize) {
-      this.prize = prize;
-   }
+    public void setMissing_date(String missing_date) {
+        this.missing_date = missing_date;
+    }
 
-   public ArrayList<String> getPhoto_urls() {
-      return photo_urls;
-   }
+    public String getPrize() {
+        return prize;
+    }
 
-   public void setPhoto_urls(ArrayList<String> photo_urls) {
-      this.photo_urls = photo_urls;
-   }
+    public void setPrize(String prize) {
+        this.prize = prize;
+    }
 
-   public ArrayList<ContactDetail> getContacts() {
-      return contacts;
-   }
+    public ArrayList<String> getPhoto_urls() {
+        return photo_urls;
+    }
 
-   public void setContacts(ArrayList<ContactDetail> contacts) {
-      this.contacts = contacts;
-   }
+    public void setPhoto_urls(ArrayList<String> photo_urls) {
+        this.photo_urls = photo_urls;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getContacts() {
+        return contacts;
+    }
+
+    public void setContacts(String contacts) {
+        this.contacts = contacts;
+    }
 }

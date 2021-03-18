@@ -6,22 +6,26 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/logo"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/logo"
         android:supportsRtl="true"
         android:theme="@style/Theme.MPFApp">
-        <activity
-            android:name=".FormActivity"
-            android:windowSoftInputMode="adjustResize" />
-        <activity android:name=".MissingPersonDetailActivity" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".MessageSendActivity"></activity>
+        <activity android:name=".LogInActivity" />
+        <activity android:name=".SignUpActivity" />
+        <activity android:name=".SplashScreenActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".FormActivity"
+            android:windowSoftInputMode="adjustResize" />
+        <activity android:name=".MissingPersonDetailActivity" />
+        <activity android:name=".MainActivity" />
     </application>
 
 </manifest>

@@ -2,9 +2,13 @@ package Fragments;
 
 import android.app.Fragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -12,28 +16,94 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import Adapter.NotificationAdapter;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.hemantpatel.mpfapp.R;
 
 import java.util.ArrayList;
 
-import Models.NotificationData;
+import Models.MessageData;
+import Models.MissingPersonData;
 
 public class NotificationFragment extends Fragment {
     View mView;
-    ArrayList<NotificationData> mList;
     RecyclerView mRecyclerView;
     NotificationAdapter mAdapter;
 
+    TextView notAvailableText;
+
+    ArrayList<MissingPersonData> mPersonDataList;
+    ArrayList<MessageData> mMessageData;
+
+    DatabaseReference mDatabase;
+    ValueEventListener mListener;
+    String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mView = inflater.inflate(R.layout.notification_fragment_layout, container, false);
 
+        mDatabase = FirebaseDatabase.getInstance().getReference("Missing Person Data");
+        mPersonDataList = new ArrayList<>();
+        mMessageData = new ArrayList<>();
+
         mRecyclerView = mView.findViewById(R.id.recyclerView);
-        mList = new ArrayList<>();
-        populateList();
-        mAdapter = new NotificationAdapter(getActivity(),mList);
+        mAdapter = new NotificationAdapter(getActivity(), mPersonDataList, mMessageData);
+        notAvailableText = mView.findViewById(R.id.notification_fragment_not_available);
+        notAvailableText.setVisibility(View.GONE);
+
+
+        mListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (mPersonDataList.size() != 0 && mMessageData.size() != 0) {
+                    mPersonDataList.clear();
+                    mMessageData.clear();
+                }
+
+                if (snapshot.child(userID).getChildrenCount() == 0) {
+                    notAvailableText.setVisibility(View.VISIBLE);
+                    mRecyclerView.setVisibility(View.GONE);
+                } else {
+                    notAvailableText.setVisibility(View.GONE);
+                    mRecyclerView.setVisibility(View.VISIBLE);
+                }
+
+
+                // get data of missing person
+                for (DataSnapshot snap : snapshot.child(userID).getChildren()) {
+                    MissingPersonData data = snap.getValue(MissingPersonData.class);
+                    mPersonDataList.add(data);
+
+                    int i = 1;
+                    for (DataSnapshot msgs : snap.child("messages").getChildren()) {
+
+                        if (i == snap.child("messages").getChildrenCount()) {
+                            MessageData tempData = msgs.getValue(MessageData.class);
+                            mMessageData.add(tempData);
+                        }
+                        i++;
+                    }
+                }
+                Log.d("Hemu", "size : " + mPersonDataList.size());
+                mAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        };
+
+        mDatabase.addValueEventListener(mListener);
+
+
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.setHasFixedSize(true);
@@ -41,10 +111,4 @@ public class NotificationFragment extends Fragment {
         return mView;
     }
 
-    private void populateList() {
-        for (int i = 0; i < 5; i++) {
-            mList.add(new NotificationData("user"+i,null,"Hello Friend,i saw your brother in Taj garden , Gandhi chowk Bhilai,you can contact me. is my contact number : 9408273838"));
-        }
-
-    }
 }

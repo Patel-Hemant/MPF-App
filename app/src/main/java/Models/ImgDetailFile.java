@@ -4,14 +4,14 @@ import android.net.Uri;
 
 public class ImgDetailFile {
     private String mName;
-    private Uri mImageUrl;
+    private Uri mImageUri;
 
     public ImgDetailFile() {
     }
 
-    public ImgDetailFile(String name, Uri imageUrl) {
+    public ImgDetailFile(String name, Uri imageUri) {
         mName = name;
-        mImageUrl = imageUrl;
+        mImageUri = imageUri;
     }
 
     public String getName() {
@@ -22,11 +22,11 @@ public class ImgDetailFile {
         mName = name;
     }
 
-    public Uri getImageUrl() {
-        return mImageUrl;
+    public Uri getImageUri() {
+        return mImageUri;
     }
 
-    public void setImageUrl(Uri imageUrl) {
-        mImageUrl = imageUrl;
+    public void setImageUri(Uri imageUri) {
+        mImageUri = imageUri;
     }
 }

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="10sp">
+
+    <ImageView
+        android:id="@+id/dialog_img"
+        android:layout_width="40sp"
+        android:layout_height="40sp"
+        android:scaleType="centerCrop"
+        android:src="@color/mycolor1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/dialog_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="5sp"
+        android:autoSizeTextType="uniform"
+        android:maxLines="1"
+        android:text="1/4 image is uploading ...."
+        android:textSize="15sp"
+        app:layout_constraintBottom_toBottomOf="@+id/dialog_img"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/dialog_img"
+        app:layout_constraintTop_toTopOf="@+id/dialog_img" />
+
+    <com.google.android.material.progressindicator.LinearProgressIndicator
+        android:id="@+id/dialog_progress"
+        android:layout_width="10000sp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="8dp"
+        android:max="100"
+        android:progress="40"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dialog_img" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

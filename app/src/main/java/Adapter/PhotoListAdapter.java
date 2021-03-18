@@ -35,7 +35,7 @@ public class PhotoListAdapter extends RecyclerView.Adapter<PhotoListAdapter.MyVi
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        Glide.with(mContext).load(mList.get(position).getImageUrl()).into(holder.mImage);
+        Glide.with(mContext).load(mList.get(position).getImageUri()).into(holder.mImage);
 
         holder.delete.setOnClickListener(new View.OnClickListener() {
             @Override

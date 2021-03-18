@@ -38,6 +38,7 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0sp"
+        android:layout_marginTop="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -45,7 +46,7 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/textInputLayout"
@@ -59,6 +60,8 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:text="this is dummy text"
+                    android:id="@+id/msg_text_box"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
 
@@ -76,6 +79,8 @@
                 app:layout_constraintTop_toBottomOf="@+id/textInputLayout">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:text="this is dummy text"
+                    android:id="@+id/missing_person_age"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:inputType="number" />
@@ -94,6 +99,8 @@
                 app:layout_constraintTop_toBottomOf="@+id/textInputLayout3">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:text="this is dummy text"
+                    android:id="@+id/missing_person_address"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
 
@@ -159,6 +166,8 @@
                 app:layout_constraintTop_toBottomOf="@+id/radioGroup">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:text="this is dummy text"
+                    android:id="@+id/missing_person_contact_number"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
 
@@ -177,6 +186,8 @@
                 app:layout_constraintTop_toBottomOf="@+id/textInputLayout9">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:text="this is dummy text"
+                    android:id="@+id/missing_person_missing_date"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
 
@@ -195,6 +206,8 @@
                 app:layout_constraintTop_toBottomOf="@+id/textInputLayout5">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:text="this is dummy text"
+                    android:id="@+id/prize"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
 
@@ -213,10 +226,12 @@
                 app:layout_constraintTop_toBottomOf="@+id/textInputLayout6">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:text="this is dummy text"
+                    android:id="@+id/description"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:inputType="textCapSentences|textMultiLine"
-                    android:isScrollContainer="true"/>
+                    android:isScrollContainer="true" />
 
             </com.google.android.material.textfield.TextInputLayout>
 

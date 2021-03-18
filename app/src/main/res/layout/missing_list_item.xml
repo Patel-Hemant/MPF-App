@@ -87,7 +87,7 @@
             app:layout_constraintTop_toBottomOf="@+id/gender" />
 
         <TextView
-            android:id="@+id/missing_date2"
+            android:id="@+id/meet_prize"
             android:layout_width="0sp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"

@@ -12,6 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.hemantpatel.mpfapp.MissingPersonDetailActivity;
 import com.hemantpatel.mpfapp.R;
 
@@ -44,13 +45,19 @@ public class MissingListAdapter extends RecyclerView.Adapter<MissingListAdapter.
         holder.mAge.setText(String.format("Age: %s", data.getAge()));
         holder.mGender.setText(String.format("Gender: %s", data.getGender()));
         holder.mMissingDate.setText(String.format("missing date : %s", data.getMissing_date()));
+        holder.mPrize.setText(String.format("Prize: %s", mList.get(position).getPrize()));
+
+
+        Glide.with(mContext).load(mList.get(position).getPhoto_urls().get(0)).into(holder.mMissingImage);
 
         holder.detailBtn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        mContext.startActivity(new Intent(mContext, MissingPersonDetailActivity.class));
-                    }
-                });
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(mContext, MissingPersonDetailActivity.class);
+                intent.putExtra("data",mList.get(position));
+                mContext.startActivity(intent);
+            }
+        });
 
     }
 
@@ -65,16 +72,18 @@ public class MissingListAdapter extends RecyclerView.Adapter<MissingListAdapter.
         private TextView mAge;
         private TextView mGender;
         private TextView mMissingDate;
+        private TextView mPrize;
         private Button detailBtn;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
 
-           // mMissingImage = itemView.findViewById(R.id.missing_person_image);
+            mMissingImage = itemView.findViewById(R.id.missing_person_image);
             mName = itemView.findViewById(R.id.missing_name);
             mAge = itemView.findViewById(R.id.age);
             mGender = itemView.findViewById(R.id.gender);
             mMissingDate = itemView.findViewById(R.id.missing_date);
+            mPrize = itemView.findViewById(R.id.meet_prize);
             detailBtn = itemView.findViewById(R.id.see_detail);
         }
     }
