@@ -14,13 +14,12 @@ public class SplashScreenActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        /* Hiding Title bar of this activity screen */
-        getWindow().requestFeature(Window.FEATURE_NO_TITLE);
-        /* Making this activity, full screen */
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
+//        /* Hiding Title bar of this activity screen */
+//        getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+//        /* Making this activity, full screen */
+//        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_splash_screen);
-
-
+        getSupportActionBar().hide();
         mHandler = new Handler();
         mHandler.postDelayed(new Runnable() {
             @Override
@@ -28,7 +27,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                 finish();
                 startActivity(new Intent(SplashScreenActivity.this, SignUpActivity.class));
             }
-        }, 100);
+        }, 4000);
 
 
     }

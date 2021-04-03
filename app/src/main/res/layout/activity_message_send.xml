@@ -47,11 +47,14 @@
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/msg_text_box"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:clickable="true"
-            android:layout_height="match_parent"
-            android:drawablePadding="10sp"
             android:drawableEnd="@drawable/ic_send"
-            android:focusable="true" />
+            android:drawablePadding="10sp"
+            android:focusable="true"
+            android:maxLines="5"
+            android:minLines="1"
+            android:scrollbars="vertical" />
 
     </com.google.android.material.textfield.TextInputLayout>
 

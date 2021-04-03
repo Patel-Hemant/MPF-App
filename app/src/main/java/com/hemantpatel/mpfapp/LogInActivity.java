@@ -1,8 +1,5 @@
 package com.hemantpatel.mpfapp;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,6 +14,9 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
@@ -25,28 +25,20 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 public class LogInActivity extends AppCompatActivity {
-    TextInputEditText mEmail, mPassword;
+    private TextInputEditText mEmail, mPassword;
 
-    Button logInBtn;
-    TextView signUpText;
-    ProgressBar mProgressBar;
+    private Button logInBtn;
+    private TextView signUpText;
+    private ProgressBar mProgressBar;
     private FirebaseAuth mAuth;
-    Switch mSwitch;
+    private Switch mSwitch;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_log_in);
-        mAuth = FirebaseAuth.getInstance();
-
-        mSwitch = findViewById(R.id.switch1);
-
-        mProgressBar = findViewById(R.id.progressBar);
-        mProgressBar.setVisibility(View.GONE);
-
-        mEmail = findViewById(R.id.login_email);
-        mPassword = findViewById(R.id.login_password);
+        initViews();
 
         mSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -59,9 +51,6 @@ public class LogInActivity extends AppCompatActivity {
             }
         });
 
-
-
-        signUpText = findViewById(R.id.signup_text);
         signUpText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -70,7 +59,6 @@ public class LogInActivity extends AppCompatActivity {
             }
         });
 
-        logInBtn = findViewById(R.id.login_btn);
         logInBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -81,11 +69,8 @@ public class LogInActivity extends AppCompatActivity {
                 } else {
                     Toast.makeText(LogInActivity.this, "please write your email and password", Toast.LENGTH_SHORT).show();
                 }
-
             }
         });
-
-
     }
 
     private boolean checkData() {
@@ -103,28 +88,34 @@ public class LogInActivity extends AppCompatActivity {
         }
     }
 
-
     private void LogInUser(String email, String password) {
         mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 mProgressBar.setVisibility(View.GONE);
                 if (task.isSuccessful()) {
-                    FirebaseUser user = mAuth.getCurrentUser();
-
-                    Log.d("hemu", user.getEmail() + "\n ID: " + user.getUid());
-                    Toast.makeText(LogInActivity.this, user.getEmail(), Toast.LENGTH_SHORT).show();
-
-                    finish();
                     startActivity(new Intent(LogInActivity.this, MainActivity.class));
+                    finish();
                 } else {
                     Log.d("hemu", "createUserWithEmail:failure", task.getException());
                     Toast.makeText(LogInActivity.this, task.getException().getMessage().toString(), Toast.LENGTH_SHORT).show();
                 }
-
             }
         });
-
-
     }
+
+    private void initViews() {
+        mAuth = FirebaseAuth.getInstance();
+        mSwitch = findViewById(R.id.switch12);
+
+        mProgressBar = findViewById(R.id.progressBar);
+        mProgressBar.setVisibility(View.GONE);
+
+        mEmail = findViewById(R.id.login_email);
+        mPassword = findViewById(R.id.login_password);
+
+        signUpText = findViewById(R.id.signup_text);
+        logInBtn = findViewById(R.id.login_btn);
+    }
+
 }

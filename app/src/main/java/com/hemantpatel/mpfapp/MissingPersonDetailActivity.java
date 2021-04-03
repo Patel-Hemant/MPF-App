@@ -11,10 +11,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.tabs.TabLayout;
 
 import Adapter.DetailTabAdapter;
 import Models.MissingPersonData;
+
+import static Constants.Params.DATA_TRANSFER_KEY;
 
 public class MissingPersonDetailActivity extends AppCompatActivity {
     TabLayout tabLayout;
@@ -23,7 +26,6 @@ public class MissingPersonDetailActivity extends AppCompatActivity {
     ImageView mImageView;
     TextView name, age, gender, missing_date;
     public static MissingPersonData mPersonData;
-
     Button sendBtn;
 
     @Override
@@ -31,46 +33,16 @@ public class MissingPersonDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_missing_person_detail);
 
-        mPersonData = (MissingPersonData) getIntent().getSerializableExtra("data");
+        initViews();
 
-        mImageView = findViewById(R.id.missing_image);
-        Glide.with(MissingPersonDetailActivity.this).load(mPersonData.getPhoto_urls().get(0)).into(mImageView);
-
-        name = findViewById(R.id.missing_name);
-        age = findViewById(R.id.age);
-        gender = findViewById(R.id.gender);
-        missing_date = findViewById(R.id.missing_date);
-
-
-        name.setText(mPersonData.getName());
-        age.setText(String.format("Age: %s", mPersonData.getAge()));
-        gender.setText(String.format("Gender: %s", mPersonData.getGender()));
-        missing_date.setText(String.format("Missing Date: %s", mPersonData.getMissing_date()));
-
-
-        tabLayout = findViewById(R.id.tabLayout);
-        viewPager = findViewById(R.id.viewPager);
-
-        tabLayout.addTab(tabLayout.newTab().setText("Detail"));
-        tabLayout.addTab(tabLayout.newTab().setText("Photos"));
-        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
-
-        sendBtn = findViewById(R.id.send_btn);
         sendBtn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Intent intent = new Intent(MissingPersonDetailActivity.this,MessageSendActivity.class);
-                        intent.putExtra("data",mPersonData);
-                        startActivity(intent);
-                    }
-                });
-
-
-
-
-
-
-
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MissingPersonDetailActivity.this, MessageSendActivity.class);
+                intent.putExtra(DATA_TRANSFER_KEY, mPersonData);
+                startActivity(intent);
+            }
+        });
 
 
         final DetailTabAdapter adapter = new DetailTabAdapter(this, getSupportFragmentManager(), tabLayout.getTabCount());
@@ -91,5 +63,33 @@ public class MissingPersonDetailActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    public void initViews() {
+        mPersonData = (MissingPersonData) getIntent().getSerializableExtra(DATA_TRANSFER_KEY);
+
+        mImageView = findViewById(R.id.missing_image);
+        Glide.with(MissingPersonDetailActivity.this).applyDefaultRequestOptions(new RequestOptions().placeholder(R.drawable.ic_person)).load(mPersonData.getPhoto_urls().get(0)).into(mImageView);
+
+        // init views with these Ids
+        name = findViewById(R.id.missing_name);
+        age = findViewById(R.id.age);
+        gender = findViewById(R.id.gender);
+        missing_date = findViewById(R.id.missing_date);
+
+        // setData on Views
+        name.setText(mPersonData.getName());
+        age.setText(String.format("Age: %s", mPersonData.getAge()));
+        gender.setText(String.format("Gender: %s", mPersonData.getGender()));
+        missing_date.setText(String.format("Missing Date: %s", mPersonData.getMissing_date()));
+
+        tabLayout = findViewById(R.id.tabLayout);
+        viewPager = findViewById(R.id.viewPager);
+
+        tabLayout.addTab(tabLayout.newTab().setText("Detail"));
+        tabLayout.addTab(tabLayout.newTab().setText("Photos"));
+        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+
+        sendBtn = findViewById(R.id.send_btn);
     }
 }

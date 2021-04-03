@@ -25,41 +25,38 @@ import com.hemantpatel.mpfapp.R;
 import java.util.ArrayList;
 import java.util.Map;
 
+import static Constants.Params.DATABASE_ROOT_KEY;
+
 public class MissingFragment extends Fragment {
     View mView;
     RecyclerView mRecyclerView;
     MissingListAdapter mAdapter;
     ArrayList<MissingPersonData> mList;
-
     ProgressBar mProgressBar;
-
     private DatabaseReference mDatabaseReference;
+    private ValueEventListener mListener;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        mView = inflater.inflate(R.layout.missing_fragment_layout,container,false);
+        mView = inflater.inflate(R.layout.missing_fragment_layout, container, false);
         mProgressBar = mView.findViewById(R.id.loading);
 
         mList = new ArrayList<>();
         mRecyclerView = mView.findViewById(R.id.recyclerView);
-        mAdapter = new MissingListAdapter(getActivity(),mList);
+        mAdapter = new MissingListAdapter(getActivity(), mList);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.setHasFixedSize(true);
 
-
-        mDatabaseReference = FirebaseDatabase.getInstance().getReference("Missing Person Data");
-
-        mDatabaseReference.addValueEventListener(new ValueEventListener() {
+        mDatabaseReference = FirebaseDatabase.getInstance().getReference(DATABASE_ROOT_KEY);
+        mListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 mList.clear();
-                for (DataSnapshot snap : snapshot.getChildren()){
-
-                    for (DataSnapshot person : snap.getChildren()){
+                for (DataSnapshot snap : snapshot.getChildren()) {
+                    for (DataSnapshot person : snap.getChildren()) {
                         MissingPersonData data = person.getValue(MissingPersonData.class);
-                       // MissingPersonData newData = new MissingPersonData(snap.getKey(),data.get("name").toString(),data.get("age").toString(),data.get("gender").toString(),data.get("address").toString(),data.get("missing_date").toString(),data.get("prize").toString(),data.get("contacts").toString(),(ArrayList<String>) data.get("photo_urls"),data.get("description").toString());
                         mList.add(data);
                         mAdapter.notifyDataSetChanged();
                     }
@@ -69,12 +66,15 @@ public class MissingFragment extends Fragment {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
             }
-        });
-
-
+        };
+        mDatabaseReference.addValueEventListener(mListener);
         return mView;
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mDatabaseReference.removeEventListener(mListener);
+    }
 }

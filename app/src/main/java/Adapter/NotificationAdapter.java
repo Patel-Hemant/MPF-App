@@ -14,21 +14,25 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.hemantpatel.mpfapp.MessageSendActivity;
 import com.hemantpatel.mpfapp.R;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import Models.MessageData;
 import Models.MissingPersonData;
 import Models.NotificationData;
 
+import static Constants.Params.DATA_TRANSFER_KEY;
+
 public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapter.MyViewHolder> {
     Context mContext;
     ArrayList<MissingPersonData> mList;
-    ArrayList<MessageData> mMessageData;
+    HashMap<String, MessageData> mMessageData;
 
-    public NotificationAdapter(Context context, ArrayList<MissingPersonData> list, ArrayList<MessageData> messageData) {
+    public NotificationAdapter(Context context, ArrayList<MissingPersonData> list, HashMap<String, MessageData> messageData) {
         mContext = context;
         mList = list;
         mMessageData = messageData;
@@ -45,23 +49,26 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         MissingPersonData data = mList.get(position);
+        MessageData msgData = mMessageData.get(data.getName());
 
         holder.mName.setText(data.getName());
 
-        Log.d("Hemu","msg size : " + mMessageData.size());
-
-        if (mMessageData.size() != 0 ){
-        holder.mMessage.setText(String.format("%s : %s", mMessageData.get(position).getEmail().replace("@gmail.com", ""), mMessageData.get(position).getMsg()));
-        }else {
+        if (msgData != null) {
+            holder.mMessage.setText(String.format("%s : %s", msgData.getEmail().replace("@gmail.com", ""), msgData.getMsg()));
+        } else {
             holder.mMessage.setText("no any message");
         }
-        Glide.with(mContext).load(data.getPhoto_urls().get(0)).into(holder.mProfile);
+
+
+        Glide.with(mContext)
+                .applyDefaultRequestOptions(new RequestOptions().placeholder(R.drawable.ic_person))
+                .load(data.getPhoto_urls().get(0)).circleCrop().into(holder.mProfile);
 
         holder.mSeeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(mContext, MessageSendActivity.class);
-                intent.putExtra("data", data);
+                intent.putExtra(DATA_TRANSFER_KEY, data);
                 mContext.startActivity(intent);
             }
         });

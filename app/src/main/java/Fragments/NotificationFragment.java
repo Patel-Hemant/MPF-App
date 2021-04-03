@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,9 +27,13 @@ import com.google.firebase.database.ValueEventListener;
 import com.hemantpatel.mpfapp.R;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import Models.MessageData;
 import Models.MissingPersonData;
+
+import static Constants.Params.DATABASE_MESSAGE_KEY;
+import static Constants.Params.DATABASE_ROOT_KEY;
 
 public class NotificationFragment extends Fragment {
     View mView;
@@ -36,9 +41,10 @@ public class NotificationFragment extends Fragment {
     NotificationAdapter mAdapter;
 
     TextView notAvailableText;
+    ProgressBar mProgressBar;
 
     ArrayList<MissingPersonData> mPersonDataList;
-    ArrayList<MessageData> mMessageData;
+    HashMap<String, MessageData> mMessageData;
 
     DatabaseReference mDatabase;
     ValueEventListener mListener;
@@ -49,15 +55,15 @@ public class NotificationFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mView = inflater.inflate(R.layout.notification_fragment_layout, container, false);
 
-        mDatabase = FirebaseDatabase.getInstance().getReference("Missing Person Data");
+        mDatabase = FirebaseDatabase.getInstance().getReference(DATABASE_ROOT_KEY);
         mPersonDataList = new ArrayList<>();
-        mMessageData = new ArrayList<>();
+        mMessageData = new HashMap<>();
 
         mRecyclerView = mView.findViewById(R.id.recyclerView);
         mAdapter = new NotificationAdapter(getActivity(), mPersonDataList, mMessageData);
         notAvailableText = mView.findViewById(R.id.notification_fragment_not_available);
         notAvailableText.setVisibility(View.GONE);
-
+        mProgressBar = mView.findViewById(R.id.notification_load_progress);
 
         mListener = new ValueEventListener() {
             @Override
@@ -66,7 +72,6 @@ public class NotificationFragment extends Fragment {
                     mPersonDataList.clear();
                     mMessageData.clear();
                 }
-
                 if (snapshot.child(userID).getChildrenCount() == 0) {
                     notAvailableText.setVisibility(View.VISIBLE);
                     mRecyclerView.setVisibility(View.GONE);
@@ -74,41 +79,37 @@ public class NotificationFragment extends Fragment {
                     notAvailableText.setVisibility(View.GONE);
                     mRecyclerView.setVisibility(View.VISIBLE);
                 }
-
-
                 // get data of missing person
                 for (DataSnapshot snap : snapshot.child(userID).getChildren()) {
                     MissingPersonData data = snap.getValue(MissingPersonData.class);
                     mPersonDataList.add(data);
-
                     int i = 1;
-                    for (DataSnapshot msgs : snap.child("messages").getChildren()) {
-
-                        if (i == snap.child("messages").getChildrenCount()) {
+                    for (DataSnapshot msgs : snap.child(DATABASE_MESSAGE_KEY).getChildren()) {
+                        if (i == snap.child(DATABASE_MESSAGE_KEY).getChildrenCount()) {
                             MessageData tempData = msgs.getValue(MessageData.class);
-                            mMessageData.add(tempData);
+                            mMessageData.put(data.getName(), tempData);
                         }
                         i++;
                     }
                 }
-                Log.d("Hemu", "size : " + mPersonDataList.size());
                 mAdapter.notifyDataSetChanged();
+                mProgressBar.setVisibility(View.GONE);
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
             }
         };
-
         mDatabase.addValueEventListener(mListener);
-
-
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.setHasFixedSize(true);
-
         return mView;
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mDatabase.removeEventListener(mListener);
+    }
 }

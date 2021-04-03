@@ -13,12 +13,15 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.hemantpatel.mpfapp.MissingPersonDetailActivity;
 import com.hemantpatel.mpfapp.R;
 
 import java.util.ArrayList;
 
 import Models.MissingPersonData;
+
+import static Constants.Params.DATA_TRANSFER_KEY;
 
 public class MissingListAdapter extends RecyclerView.Adapter<MissingListAdapter.MyViewHolder> {
     Context mContext;
@@ -47,18 +50,16 @@ public class MissingListAdapter extends RecyclerView.Adapter<MissingListAdapter.
         holder.mMissingDate.setText(String.format("missing date : %s", data.getMissing_date()));
         holder.mPrize.setText(String.format("Prize: %s", mList.get(position).getPrize()));
 
-
-        Glide.with(mContext).load(mList.get(position).getPhoto_urls().get(0)).into(holder.mMissingImage);
+        Glide.with(mContext).applyDefaultRequestOptions(new RequestOptions().placeholder(R.drawable.ic_person)).load(mList.get(position).getPhoto_urls().get(0)).into(holder.mMissingImage);
 
         holder.detailBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(mContext, MissingPersonDetailActivity.class);
-                intent.putExtra("data",mList.get(position));
+                intent.putExtra(DATA_TRANSFER_KEY,mList.get(position));
                 mContext.startActivity(intent);
             }
         });
-
     }
 
     @Override

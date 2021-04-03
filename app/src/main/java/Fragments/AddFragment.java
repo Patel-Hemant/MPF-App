@@ -29,8 +29,6 @@ public class AddFragment extends Fragment {
                 startActivity(new Intent(getActivity(), FormActivity.class));
             }
         });
-
-
         return mView;
     }
 }

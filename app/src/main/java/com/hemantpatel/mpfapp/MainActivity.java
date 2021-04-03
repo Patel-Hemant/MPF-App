@@ -9,17 +9,15 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import Fragments.AddFragment;
 import Fragments.MissingFragment;
 import Fragments.NotificationFragment;
-import Fragments.SettingFragment;
+import Fragments.AccountFragment;
 
 public class MainActivity extends AppCompatActivity {
-
     BottomNavigationView mBottomNavigationView;
 
     @Override
@@ -45,18 +43,14 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.notification:
                         loadFragment(new NotificationFragment());
                         break;
-                    case R.id.setting:
-                        loadFragment(new SettingFragment());
+                    case R.id.account:
+                        loadFragment(new AccountFragment());
                         break;
-
                 }
-
-
                 return true;
             }
         });
     }
-
 
     private void loadFragment(Fragment fragment) {
 // create a FragmentManager
@@ -65,6 +59,6 @@ public class MainActivity extends AppCompatActivity {
         FragmentTransaction fragmentTransaction = fm.beginTransaction();
 // replace the FrameLayout with new Fragment
         fragmentTransaction.replace(R.id.container, fragment);
-        fragmentTransaction.commit(); // save the changes
+        fragmentTransaction.commit();
     }
 }
