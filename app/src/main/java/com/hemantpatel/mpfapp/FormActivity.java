@@ -157,7 +157,6 @@ public class FormActivity extends AppCompatActivity {
         description.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                Toast.makeText(FormActivity.this, "touched", Toast.LENGTH_SHORT).show();
                 v.getParent().requestDisallowInterceptTouchEvent(true);
                 if (event.getAction() == MotionEvent.ACTION_UP) {
                     v.getParent().requestDisallowInterceptTouchEvent(false);
@@ -165,7 +164,6 @@ public class FormActivity extends AppCompatActivity {
                 return false;
             }
         });
-
 
     }
 
