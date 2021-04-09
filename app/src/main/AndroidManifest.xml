@@ -19,6 +19,7 @@
         <activity android:name=".SignUpActivity" />
         <activity
             android:name=".SplashScreenActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/FullScreenActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -28,9 +29,14 @@
         </activity>
         <activity
             android:name=".FormActivity"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize" />
-        <activity android:name=".MissingPersonDetailActivity" />
-        <activity android:name=".MainActivity" />
+        <activity
+            android:name=".MissingPersonDetailActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".MainActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>
