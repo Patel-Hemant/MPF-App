@@ -11,6 +11,9 @@
         android:roundIcon="@mipmap/logo"
         android:supportsRtl="true"
         android:theme="@style/Theme.MPFApp">
+        <activity
+            android:name=".ResetPasswordActivity"
+            android:exported="false" />
         <activity android:name=".EditActivity" />
         <activity android:name=".AboutActivity" />
         <activity android:name=".ImagePreviewActivity" />

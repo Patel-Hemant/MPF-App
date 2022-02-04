@@ -28,7 +28,7 @@ public class LogInActivity extends AppCompatActivity {
     private TextInputEditText mEmail, mPassword;
 
     private Button logInBtn;
-    private TextView signUpText;
+    private TextView signUpText, resetText;
     private ProgressBar mProgressBar;
     private FirebaseAuth mAuth;
     private Switch mSwitch;
@@ -59,11 +59,19 @@ public class LogInActivity extends AppCompatActivity {
             }
         });
 
+        resetText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+//                finish();
+                startActivity(new Intent(LogInActivity.this, ResetPasswordActivity.class));
+            }
+        });
+
         logInBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (checkData()) {
-                    LogInUser(mEmail.getText().toString(), mPassword.getText().toString());
+                    LogInUser(mEmail.getText().toString().trim(), mPassword.getText().toString().trim());
                     mProgressBar.setVisibility(View.VISIBLE);
                     hideSoftInputFromWindow();
                 } else {
@@ -115,6 +123,7 @@ public class LogInActivity extends AppCompatActivity {
         mPassword = findViewById(R.id.login_password);
 
         signUpText = findViewById(R.id.signup_text);
+        resetText = findViewById(R.id.reset_text_btn);
         logInBtn = findViewById(R.id.login_btn);
     }
 
