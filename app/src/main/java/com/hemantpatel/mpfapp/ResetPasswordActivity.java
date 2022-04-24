@@ -57,6 +57,7 @@ public class ResetPasswordActivity extends AppCompatActivity {
                 mProgressBar.setVisibility(View.GONE);
                 if (task.isSuccessful()){
                     Toast.makeText(ResetPasswordActivity.this, "Reset link is sent to your email", Toast.LENGTH_SHORT).show();
+                    finish();
                 } else Toast.makeText(ResetPasswordActivity.this, task.getException().getMessage().toString(), Toast.LENGTH_SHORT).show();
             }
         });

@@ -1,7 +1,5 @@
 package com.hemantpatel.mpfapp;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.viewpager.widget.ViewPager;
+import static Constants.Params.DATA_TRANSFER_KEY;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,15 +7,20 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.viewpager.widget.ViewPager;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.tabs.TabLayout;
+import com.google.firebase.auth.FirebaseAuth;
+
+import java.util.Objects;
 
 import Adapter.DetailTabAdapter;
 import Models.MissingPersonData;
-
-import static Constants.Params.DATA_TRANSFER_KEY;
 
 public class MissingPersonDetailActivity extends AppCompatActivity {
     TabLayout tabLayout;
@@ -38,9 +41,13 @@ public class MissingPersonDetailActivity extends AppCompatActivity {
         sendBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MissingPersonDetailActivity.this, MessageSendActivity.class);
-                intent.putExtra(DATA_TRANSFER_KEY, mPersonData);
-                startActivity(intent);
+                if (Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).isEmailVerified()) {
+                    Intent intent = new Intent(MissingPersonDetailActivity.this, MessageSendActivity.class);
+                    intent.putExtra(DATA_TRANSFER_KEY, mPersonData);
+                    startActivity(intent);
+                } else {
+                    Toast.makeText(MissingPersonDetailActivity.this, "Please Verify Your Email Address First !", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 

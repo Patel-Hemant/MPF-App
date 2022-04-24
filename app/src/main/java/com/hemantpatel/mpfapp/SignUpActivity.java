@@ -1,12 +1,14 @@
 package com.hemantpatel.mpfapp;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -17,11 +19,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.auth.ActionCodeSettings;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -130,11 +136,13 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
     private void SignUpUser(String email, String password) {
+
         mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 mProgressBar.setVisibility(View.GONE);
                 if (task.isSuccessful()) {
+                    Log.d("email_verify", "createUserWithEmail hurrrraaaahhhh");
                     startActivity(new Intent(SignUpActivity.this, MainActivity.class));
                     finish();
                 } else {
@@ -149,8 +157,7 @@ public class SignUpActivity extends AppCompatActivity {
     public void onStart() {
         super.onStart();
         // Check if user is signed in (non-null) and update UI accordingly.
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        if (currentUser != null) {
+        if (mAuth.getCurrentUser() != null) {
             startActivity(new Intent(SignUpActivity.this, MainActivity.class));
             finish();
         }
@@ -170,4 +177,5 @@ public class SignUpActivity extends AppCompatActivity {
         signUpBtn = findViewById(R.id.signup_btn);
         mSwitch = findViewById(R.id.switch12);
     }
+
 }

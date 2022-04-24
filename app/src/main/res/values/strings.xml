@@ -23,4 +23,13 @@
     <string name="description"><b>"Description: "</b></string>
     <string name="prize"><b>"Prize: "</b></string>
     <string name="if_you_have_forget_password_reset_it"><b>Reset</b> password</string>
+    <string name="your_active_missing_person_list"> <u>Your Active Missing Person List</u> </string>
+    <string name="verify">verify</string>
+    <string name="your_email_is_verified">Your email is verified!   </string>
+    <string name="your_email_is_not_verified">Your email is not verified!   </string>
+    <string name="please_enter_your_email_address_for_geting_reset_link">Please enter your email address for getting verification link.</string>
+    <string name="link_is_sent_to_your_email">Link is sent to your email</string>
+    <string name="we_are_waiting_for_your_verification">We are waiting for your Verification</string>
+    <string name="reset_password">Reset Password</string>
+    <string name="log_out">log Out</string>
 </resources>
