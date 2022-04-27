@@ -1,5 +1,7 @@
 package Adapter;
 
+import static Constants.Params.DATA_TRANSFER_KEY;
+
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -20,8 +22,6 @@ import com.hemantpatel.mpfapp.R;
 import java.util.ArrayList;
 
 import Models.MissingPersonData;
-
-import static Constants.Params.DATA_TRANSFER_KEY;
 
 public class MissingListAdapter extends RecyclerView.Adapter<MissingListAdapter.MyViewHolder> {
     Context mContext;
@@ -56,7 +56,7 @@ public class MissingListAdapter extends RecyclerView.Adapter<MissingListAdapter.
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(mContext, MissingPersonDetailActivity.class);
-                intent.putExtra(DATA_TRANSFER_KEY,mList.get(position));
+                intent.putExtra(DATA_TRANSFER_KEY, mList.get(position));
                 mContext.startActivity(intent);
             }
         });

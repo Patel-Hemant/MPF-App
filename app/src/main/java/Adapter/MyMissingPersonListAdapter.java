@@ -1,5 +1,7 @@
 package Adapter;
 
+import static Constants.Params.DATA_TRANSFER_KEY;
+
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -22,8 +24,6 @@ import java.util.ArrayList;
 
 import Fragments.AccountFragment;
 import Models.MissingPersonData;
-
-import static Constants.Params.DATA_TRANSFER_KEY;
 
 public class MyMissingPersonListAdapter extends RecyclerView.Adapter<MyMissingPersonListAdapter.MyViewHolder> {
     Context mContext;

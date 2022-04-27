@@ -1,5 +1,8 @@
 package Fragments;
 
+import static Constants.Params.DATABASE_ROOT_KEY;
+
+import android.annotation.SuppressLint;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,9 +15,6 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import Adapter.MissingListAdapter;
-import Models.MissingPersonData;
-
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -23,9 +23,9 @@ import com.google.firebase.database.ValueEventListener;
 import com.hemantpatel.mpfapp.R;
 
 import java.util.ArrayList;
-import java.util.Map;
 
-import static Constants.Params.DATABASE_ROOT_KEY;
+import Adapter.MissingListAdapter;
+import Models.MissingPersonData;
 
 public class MissingFragment extends Fragment {
     View mView;
@@ -33,8 +33,8 @@ public class MissingFragment extends Fragment {
     MissingListAdapter mAdapter;
     ArrayList<MissingPersonData> mList;
     ProgressBar mProgressBar;
-    private DatabaseReference mDatabaseReference;
-    private ValueEventListener mListener;
+    ValueEventListener mListener;
+    DatabaseReference mDatabaseReference;
 
     @Nullable
     @Override
@@ -50,7 +50,8 @@ public class MissingFragment extends Fragment {
         mRecyclerView.setHasFixedSize(true);
 
         mDatabaseReference = FirebaseDatabase.getInstance().getReference(DATABASE_ROOT_KEY);
-        mListener = new ValueEventListener() {
+        if (mListener == null) mListener = new ValueEventListener() {
+            @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 mList.clear();
@@ -68,6 +69,7 @@ public class MissingFragment extends Fragment {
             public void onCancelled(@NonNull DatabaseError error) {
             }
         };
+
         mDatabaseReference.addValueEventListener(mListener);
         return mView;
     }

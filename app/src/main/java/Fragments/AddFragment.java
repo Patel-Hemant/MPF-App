@@ -27,14 +27,11 @@ public class AddFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mView = inflater.inflate(R.layout.add_fragment_layout, container, false);
         form_btn = mView.findViewById(R.id.form_btn);
-        form_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).isEmailVerified()) {
-                    startActivity(new Intent(getActivity(), FormActivity.class));
-                } else {
-                    Toast.makeText(getActivity(), "Please Verify Your Email Address First !", Toast.LENGTH_SHORT).show();
-                }
+        form_btn.setOnClickListener(view -> {
+            if (Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).isEmailVerified()) {
+                startActivity(new Intent(getActivity(), FormActivity.class));
+            } else {
+                Toast.makeText(getActivity(), "Please Verify Your Email Address First !", Toast.LENGTH_SHORT).show();
             }
         });
         return mView;

@@ -1,18 +1,14 @@
 package com.hemantpatel.mpfapp;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
+import static Constants.Params.DATABASE_ROOT_KEY;
+import static Constants.Params.STORAGE_ROOT_KEY;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
@@ -24,6 +20,12 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCanceledListener;
@@ -43,13 +45,11 @@ import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 import Adapter.PhotoListAdapter;
 import Models.ImgDetailFile;
 import Models.MissingPersonData;
-
-import static Constants.Params.DATABASE_ROOT_KEY;
-import static Constants.Params.STORAGE_ROOT_KEY;
 
 public class FormActivity extends AppCompatActivity {
     private static final int PICK_IMAGE_REQUEST = 456;
@@ -67,7 +67,7 @@ public class FormActivity extends AppCompatActivity {
     private DatabaseReference mDatabaseReference;
     private StorageReference mStorageReference;
 
-    private final String USER_ID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+    private final String USER_ID = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
 
     private StorageTask mUploadTask;
     private int taskIndex = 0;
@@ -117,7 +117,7 @@ public class FormActivity extends AppCompatActivity {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(FormActivity.this, RecyclerView.HORIZONTAL, false));
     }
 
-    @SuppressLint("ClickableViewAccessibility")
+    @SuppressLint({"ClickableViewAccessibility", "SetTextI18n"})
     private void initViews() {
         mAlertDialog = new Dialog(FormActivity.this);
         mAlertDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -130,15 +130,13 @@ public class FormActivity extends AppCompatActivity {
         dialogImg = mAlertDialog.findViewById(R.id.dialog_img);
         mDialogProgress = mAlertDialog.findViewById(R.id.progressDialog);
         mDialogProgress.setVisibility(View.GONE);
+
         cancelBtn = mAlertDialog.findViewById(R.id.cancelBtn);
-        cancelBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (mUploadTask.isInProgress()) {
-                    mUploadTask.cancel();
-                    dialogText.setText("Canceling....");
-                    mDialogProgress.setVisibility(View.VISIBLE);
-                }
+        cancelBtn.setOnClickListener(view -> {
+            if (mUploadTask.isInProgress()) {
+                mUploadTask.cancel();
+                dialogText.setText("Canceling....");
+                mDialogProgress.setVisibility(View.VISIBLE);
             }
         });
 
@@ -152,8 +150,8 @@ public class FormActivity extends AppCompatActivity {
         mGroup = findViewById(R.id.radioGroup);
         photo_urls = new ArrayList<>();
 
-// scrolling not work in EditText inside Scrollview //EditText not scrollable inside ScrollView
-// disable parent interaction when editText is touched or Scroll
+        // scrolling not work in EditText inside Scrollview //EditText not scrollable inside ScrollView
+        // disable parent interaction when editText is touched or Scroll
         description.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -164,9 +162,7 @@ public class FormActivity extends AppCompatActivity {
                 return false;
             }
         });
-
     }
-
 
     private void openFileChooser() {
         Intent intent = new Intent();
@@ -180,8 +176,9 @@ public class FormActivity extends AppCompatActivity {
         imgList.add(file);
     }
 
+    @SuppressLint("SetTextI18n")
     private void uploadFile() {
-        if (imgList.size() == taskIndex) {
+        if (taskIndex == imgList.size()) {
             publishData();
             //mDialog.dismiss();
             mAlertDialog.dismiss();
@@ -214,8 +211,10 @@ public class FormActivity extends AppCompatActivity {
                 }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onProgress(@NonNull UploadTask.TaskSnapshot snapshot) {
-                        int progress = (int) (200.0 * snapshot.getBytesTransferred() / snapshot.getTotalByteCount());
-                        dialogProgress.setProgress((int) progress);
+                        int progress = (int) (500.0 * snapshot.getBytesTransferred() / snapshot.getTotalByteCount());
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
+                            dialogProgress.setProgress((int) progress, true);
+                        else dialogProgress.setProgress((int) progress);
                     }
                 }).addOnCanceledListener(new OnCanceledListener() {
                     @Override
@@ -236,6 +235,7 @@ public class FormActivity extends AppCompatActivity {
             addImgFile("name", mImageUri);
 
             mRecyclerView.post(new Runnable() {
+                @SuppressLint("NotifyDataSetChanged")
                 @Override
                 public void run() {
                     mAdapter.notifyDataSetChanged();
@@ -283,36 +283,37 @@ public class FormActivity extends AppCompatActivity {
             return false;
         }
 
-        if (x > 0) {
+        if (imgList.isEmpty()){
+            Toast.makeText(FormActivity.this, "Please select at least 1 image", Toast.LENGTH_SHORT).show();
             return false;
-        } else {
-            return true;
         }
+
+        return x <= 0;
     }
 
     private void publishData() {
-        String prizeValue;
-        if (prize.getText().toString().trim().equals("")) {
-            prizeValue = "00.00";
-        } else {
-            prizeValue = prize.getText().toString();
-        }
+        String prizeValue = Objects.requireNonNull(prize.getText()).toString().trim();
+        if (prizeValue.equals("")) prizeValue = "00.00";
+
         RadioButton gender = findViewById(mGroup.getCheckedRadioButtonId());
         MissingPersonData data = new MissingPersonData(USER_ID,
-                name.getText().toString(),
-                age.getText().toString(),
+                Objects.requireNonNull(name.getText()).toString(),
+                Objects.requireNonNull(age.getText()).toString(),
                 gender.getText().toString(),
-                address.getText().toString(),
-                missingDate.getText().toString(),
+                Objects.requireNonNull(address.getText()).toString(),
+                Objects.requireNonNull(missingDate.getText()).toString(),
                 prize.getText().toString(),
-                contact.getText().toString() + "\n" + FirebaseAuth.getInstance().getCurrentUser().getEmail(),
+                Objects.requireNonNull(contact.getText()).toString() + "\n" + FirebaseAuth.getInstance().getCurrentUser().getEmail(),
                 photo_urls,
-                description.getText().toString());
+                Objects.requireNonNull(description.getText()).toString());
 
         mDatabaseReference.child(USER_ID).child(data.getName()).setValue(data).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
-                Toast.makeText(FormActivity.this, "Uploaded Successful!", Toast.LENGTH_SHORT).show();
+                if (task.isSuccessful())
+                    Toast.makeText(FormActivity.this, "Successful Uploaded!", Toast.LENGTH_SHORT).show();
+                else
+                    Toast.makeText(FormActivity.this, "Please try again!", Toast.LENGTH_SHORT).show();
             }
         });
 

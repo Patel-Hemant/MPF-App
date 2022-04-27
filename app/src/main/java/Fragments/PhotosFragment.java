@@ -1,11 +1,12 @@
 package Fragments;
 
 
+import static com.hemantpatel.mpfapp.MissingPersonDetailActivity.mPersonData;
+
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -18,9 +19,6 @@ import com.hemantpatel.mpfapp.R;
 import java.util.ArrayList;
 
 import Adapter.PhotoGridAdapter;
-import Adapter.PhotoListAdapter;
-
-import static com.hemantpatel.mpfapp.MissingPersonDetailActivity.mPersonData;
 
 public class PhotosFragment extends Fragment {
     View mView;
@@ -36,9 +34,9 @@ public class PhotosFragment extends Fragment {
         mRecyclerView = mView.findViewById(R.id.grid_list);
         ArrayList<String> list = mPersonData.getPhoto_urls();
 
-        PhotoGridAdapter mAdapter = new PhotoGridAdapter(getContext(),list);
+        PhotoGridAdapter mAdapter = new PhotoGridAdapter(getContext(), list);
         mRecyclerView.setAdapter(mAdapter);
-        mRecyclerView.setLayoutManager(new GridLayoutManager(getContext(),3));
+        mRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
 
         return mView;
     }

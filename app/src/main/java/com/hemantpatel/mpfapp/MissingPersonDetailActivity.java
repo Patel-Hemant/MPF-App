@@ -3,7 +3,7 @@ import static Constants.Params.DATA_TRANSFER_KEY;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
+
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -38,16 +38,13 @@ public class MissingPersonDetailActivity extends AppCompatActivity {
 
         initViews();
 
-        sendBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).isEmailVerified()) {
-                    Intent intent = new Intent(MissingPersonDetailActivity.this, MessageSendActivity.class);
-                    intent.putExtra(DATA_TRANSFER_KEY, mPersonData);
-                    startActivity(intent);
-                } else {
-                    Toast.makeText(MissingPersonDetailActivity.this, "Please Verify Your Email Address First !", Toast.LENGTH_SHORT).show();
-                }
+        sendBtn.setOnClickListener(view -> {
+            if (Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).isEmailVerified()) {
+                Intent intent = new Intent(MissingPersonDetailActivity.this, MessageSendActivity.class);
+                intent.putExtra(DATA_TRANSFER_KEY, mPersonData);
+                startActivity(intent);
+            } else {
+                Toast.makeText(MissingPersonDetailActivity.this, "Please Verify Your Email Address First !", Toast.LENGTH_SHORT).show();
             }
         });
 

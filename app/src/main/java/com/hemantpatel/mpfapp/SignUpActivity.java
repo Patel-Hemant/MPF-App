@@ -1,14 +1,12 @@
 package com.hemantpatel.mpfapp;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -18,29 +16,23 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
-import com.google.firebase.auth.ActionCodeSettings;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+
+import java.util.Objects;
 
 
 public class SignUpActivity extends AppCompatActivity {
-    TextInputEditText mEmail, mPassword, mConfermPassword;
+    TextInputEditText mEmail, mPassword, mConfirmPassword;
     Button signUpBtn;
     TextView logInText;
     TextWatcher mTextWatcher;
     ProgressBar mProgressBar;
 
     private FirebaseAuth mAuth;
+    @SuppressLint("UseSwitchCompatOrMaterialCode")
     private Switch mSwitch;
 
     @Override
@@ -49,22 +41,19 @@ public class SignUpActivity extends AppCompatActivity {
         setContentView(R.layout.activity_sign_up);
 
         initViews();
-        logInText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-                startActivity(new Intent(SignUpActivity.this, LogInActivity.class));
-            }
+        logInText.setOnClickListener(view -> {
+            finish();
+            startActivity(new Intent(SignUpActivity.this, LogInActivity.class));
         });
 
-        signUpBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                hideSoftInputFromWindow();
-                if (checkData()) {
-                    SignUpUser(mEmail.getText().toString(), mPassword.getText().toString());
-                    mProgressBar.setVisibility(View.VISIBLE);
-                }
+        signUpBtn.setOnClickListener(view -> {
+            hideSoftInputFromWindow();
+            String email = Objects.requireNonNull(mEmail.getText()).toString().trim();
+            String password = Objects.requireNonNull(mPassword.getText()).toString().trim();
+            String re_password = Objects.requireNonNull(mConfirmPassword.getText()).toString().trim();
+            if (checkData(email, password, re_password)) {
+                SignUpUser(email, password);
+                mProgressBar.setVisibility(View.VISIBLE);
             }
         });
 
@@ -73,10 +62,10 @@ public class SignUpActivity extends AppCompatActivity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     mPassword.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
-                    mConfermPassword.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+                    mConfirmPassword.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
                 } else {
                     mPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-                    mConfermPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                    mConfirmPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
                 }
             }
         });
@@ -94,13 +83,13 @@ public class SignUpActivity extends AppCompatActivity {
             public void afterTextChanged(Editable s) {
                 mEmail.setError(null);
                 mPassword.setError(null);
-                mConfermPassword.setError(null);
+                mConfirmPassword.setError(null);
             }
         };
 
         mEmail.addTextChangedListener(mTextWatcher);
         mPassword.addTextChangedListener(mTextWatcher);
-        mConfermPassword.addTextChangedListener(mTextWatcher);
+        mConfirmPassword.addTextChangedListener(mTextWatcher);
     }
 
     private void hideSoftInputFromWindow() {
@@ -112,24 +101,25 @@ public class SignUpActivity extends AppCompatActivity {
         }
     }
 
-    private boolean checkData() {
-        if (!mEmail.getText().toString().trim().equals("") && !mPassword.getText().toString().trim().equals("")) {
-            if (mPassword.getText().toString().equals(mConfermPassword.getText().toString())) {
+    private boolean checkData(String email, String password, String re_password) {
+
+        if (!email.equals("") && !password.equals("")) {
+            if (password.equals(re_password)) {
                 return true;
             } else {
-                mConfermPassword.setError("your password is no matched!");
+                mConfirmPassword.setError("your password is no matched!");
                 return false;
             }
 
         } else {
-            if (mEmail.getText().toString().equals("")) {
+            if (email.equals("")) {
                 mEmail.setError("please write your email");
             }
-            if (mPassword.getText().toString().equals("")) {
+            if (password.equals("")) {
                 mPassword.setError("please write your Password");
             }
-            if (mConfermPassword.getText().toString().equals("")) {
-                mConfermPassword.setError("please write your Conferm Password");
+            if (re_password.equals("")) {
+                mConfirmPassword.setError("please write your Confirm Password");
             }
             return false;
         }
@@ -137,18 +127,13 @@ public class SignUpActivity extends AppCompatActivity {
 
     private void SignUpUser(String email, String password) {
 
-        mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                mProgressBar.setVisibility(View.GONE);
-                if (task.isSuccessful()) {
-                    Log.d("email_verify", "createUserWithEmail hurrrraaaahhhh");
-                    startActivity(new Intent(SignUpActivity.this, MainActivity.class));
-                    finish();
-                } else {
-                    Log.d("hemu", "createUserWithEmail:failure", task.getException());
-                    Toast.makeText(SignUpActivity.this, task.getException().getMessage().toString(), Toast.LENGTH_SHORT).show();
-                }
+        mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
+            mProgressBar.setVisibility(View.GONE);
+            if (task.isSuccessful()) {
+                startActivity(new Intent(SignUpActivity.this, MainActivity.class));
+                finish();
+            } else {
+                Toast.makeText(SignUpActivity.this, Objects.requireNonNull(task.getException()).getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -171,7 +156,7 @@ public class SignUpActivity extends AppCompatActivity {
 
         mEmail = findViewById(R.id.signup_email);
         mPassword = findViewById(R.id.signup_password);
-        mConfermPassword = findViewById(R.id.signup_password_conferm);
+        mConfirmPassword = findViewById(R.id.signup_password_conferm);
 
         logInText = findViewById(R.id.login_text);
         signUpBtn = findViewById(R.id.signup_btn);
