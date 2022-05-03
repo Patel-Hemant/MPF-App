@@ -1,14 +1,14 @@
 package Fragments;
 
+import static Constants.Params.DATABASE_ROOT_KEY;
+
 import android.annotation.SuppressLint;
 import android.app.Fragment;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,8 +24,6 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -34,7 +32,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.hemantpatel.mpfapp.LogInActivity;
-import com.hemantpatel.mpfapp.MainActivity;
 import com.hemantpatel.mpfapp.R;
 import com.hemantpatel.mpfapp.ResetPasswordActivity;
 
@@ -43,8 +40,6 @@ import java.util.Objects;
 
 import Adapter.MyMissingPersonListAdapter;
 import Models.MissingPersonData;
-
-import static Constants.Params.DATABASE_ROOT_KEY;
 
 public class AccountFragment extends Fragment {
     View mView;
@@ -66,6 +61,7 @@ public class AccountFragment extends Fragment {
 
     private FirebaseAuth mAuth;
 
+    @SuppressLint("NotifyDataSetChanged")
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Nullable
     @Override
@@ -74,32 +70,20 @@ public class AccountFragment extends Fragment {
         initViews(getContext());
 
         // update Layout
-        if (mAuth.getCurrentUser().isEmailVerified()) makeVerified();
+        if (Objects.requireNonNull(mAuth.getCurrentUser()).isEmailVerified()) makeVerified();
 
-        logOutBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FirebaseAuth.getInstance().signOut();
-                getActivity().finish();
-                startActivity(new Intent(getActivity(), LogInActivity.class));
-            }
+        logOutBtn.setOnClickListener(view -> {
+            FirebaseAuth.getInstance().signOut();
+            getActivity().finish();
+            startActivity(new Intent(getActivity(), LogInActivity.class));
         });
 
-        resetButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(getActivity(), ResetPasswordActivity.class));
-            }
-        });
+        resetButton.setOnClickListener(view -> startActivity(new Intent(getActivity(), ResetPasswordActivity.class)));
 
-        emailVerifyBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                sendVerificationMail();
-            }
-        });
+        emailVerifyBtn.setOnClickListener(view -> sendVerificationMail());
 
         mListener = new ValueEventListener() {
+            @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (mList.size() != 0) {
@@ -130,38 +114,19 @@ public class AccountFragment extends Fragment {
         };
 
         mReference.addValueEventListener(mListener);
-
-        mCompletionListener = new DatabaseReference.CompletionListener() {
-            @SuppressLint("NotifyDataSetChanged")
-            @Override
-            public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
-                mAdapter.notifyDataSetChanged();
-            }
-        };
+        mCompletionListener = (error, ref) -> mAdapter.notifyDataSetChanged();
 
         return mView;
     }
 
 
     // Email Verification
+    @RequiresApi(api = Build.VERSION_CODES.M)
     public void sendVerificationMail() {
         // send link
         Objects.requireNonNull(mAuth.getCurrentUser()).sendEmailVerification()
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @RequiresApi(api = Build.VERSION_CODES.M)
-                    @Override
-                    public void onSuccess(Void unused) {
-                        Log.d("email_verify", "mail sent to the Email");
-                        showEmailSentDialog();
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
-                        Log.d("email_verify", "mail not sent -> " + e.getMessage());
-                    }
-                });
+                .addOnSuccessListener(unused -> showEmailSentDialog())
+                .addOnFailureListener(e -> Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show());
     }
 
     // show email sent dialog
@@ -176,13 +141,10 @@ public class AccountFragment extends Fragment {
 
         builder.setView(view);
         builder.setCancelable(false)
-                .setPositiveButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        mHandler.removeCallbacks(mRunnable);
-                        if (!Objects.requireNonNull(mAuth.getCurrentUser()).isEmailVerified()) {
-                            Toast.makeText(getActivity(), "Your email is not verified please check your email and verify!", Toast.LENGTH_SHORT).show();
-                        }
+                .setPositiveButton("Cancel", (dialogInterface, i) -> {
+                    mHandler.removeCallbacks(mRunnable);
+                    if (!Objects.requireNonNull(mAuth.getCurrentUser()).isEmailVerified()) {
+                        Toast.makeText(getActivity(), "Your email is not verified please check your email and verify!", Toast.LENGTH_SHORT).show();
                     }
                 });
         verifyDialog = builder.create();
@@ -191,11 +153,11 @@ public class AccountFragment extends Fragment {
 
     public void initViews(Context context) {
         mAuth = FirebaseAuth.getInstance();
-        mReference = FirebaseDatabase.getInstance().getReference().child(DATABASE_ROOT_KEY).child(mAuth.getCurrentUser().getUid());
+        mReference = FirebaseDatabase.getInstance().getReference().child(DATABASE_ROOT_KEY).child(Objects.requireNonNull(mAuth.getCurrentUser()).getUid());
 
         userEmail = mView.findViewById(R.id.user_email);
         String email = mAuth.getCurrentUser().getEmail();
-        userEmail.setText(email.substring(0, email.indexOf("@")));
+        userEmail.setText(email != null ? email.substring(0, email.indexOf("@")) : "Unknown email address");
         yourListTitle = mView.findViewById(R.id.your_list_title);
         posterImg = mView.findViewById(R.id.posterImg);
         posterImg.setVisibility(View.GONE);
@@ -216,26 +178,24 @@ public class AccountFragment extends Fragment {
 
         // runnable handler
         mHandler = new Handler();
-        mRunnable = new Runnable() {
-            @Override
-            public void run() {
-                // check verified or not
-                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                user.reload();
-                if (user.isEmailVerified()) {
-                    mHandler.removeCallbacks(mRunnable);
-                    verifyDialog.cancel();
+        mRunnable = () -> {
+            // check verified or not
+            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+            Objects.requireNonNull(user).reload();
+            if (user.isEmailVerified()) {
+                mHandler.removeCallbacks(mRunnable);
+                verifyDialog.cancel();
 
-                    // update layout
-                    makeVerified();
-                } else {
-                    // its trigger runnable after 2000 millisecond.
-                    mHandler.postDelayed(mRunnable, 2000);
-                }
+                // update layout
+                makeVerified();
+            } else {
+                // its trigger runnable after 2000 millisecond.
+                mHandler.postDelayed(mRunnable, 2000);
             }
         };
     }
 
+    @SuppressLint("SetTextI18n")
     public void makeVerified() {
         emailVerifyStatus.setText("Your email is verified!");
         emailVerifyStatus.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_done, 0);

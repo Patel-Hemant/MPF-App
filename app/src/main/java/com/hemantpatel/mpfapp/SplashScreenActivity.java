@@ -5,8 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.view.Window;
-import android.view.WindowManager;
+
+import java.util.Objects;
 
 public class SplashScreenActivity extends AppCompatActivity {
     Handler mHandler;
@@ -19,14 +19,11 @@ public class SplashScreenActivity extends AppCompatActivity {
 //        /* Making this activity, full screen */
 //        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_splash_screen);
-        getSupportActionBar().hide();
+        Objects.requireNonNull(getSupportActionBar()).hide();
         mHandler = new Handler();
-        mHandler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                finish();
-                startActivity(new Intent(SplashScreenActivity.this, SignUpActivity.class));
-            }
+        mHandler.postDelayed(() -> {
+            finish();
+            startActivity(new Intent(SplashScreenActivity.this, SignUpActivity.class));
         }, 4000);
 
 

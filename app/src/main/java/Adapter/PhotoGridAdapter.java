@@ -1,5 +1,7 @@
 package Adapter;
 
+import static Constants.Params.IMAGE_URL_TRANSFER_KEY;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -9,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -22,12 +23,9 @@ import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.hemantpatel.mpfapp.ImagePreviewActivity;
-import com.hemantpatel.mpfapp.MainActivity;
 import com.hemantpatel.mpfapp.R;
 
 import java.util.ArrayList;
-
-import static Constants.Params.IMAGE_URL_TRANSFER_KEY;
 
 public class PhotoGridAdapter extends RecyclerView.Adapter<PhotoGridAdapter.MyViewHolder> {
     Context mContext;

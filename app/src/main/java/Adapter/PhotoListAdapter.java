@@ -53,7 +53,7 @@ public class PhotoListAdapter extends RecyclerView.Adapter<PhotoListAdapter.MyVi
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        ImageView mImage,delete;
+        ImageView mImage, delete;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);

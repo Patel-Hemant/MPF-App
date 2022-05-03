@@ -1,22 +1,21 @@
 package Fragments;
 
+import static Constants.Params.DATABASE_MESSAGE_KEY;
+import static Constants.Params.DATABASE_ROOT_KEY;
+
+import android.annotation.SuppressLint;
 import android.app.Fragment;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import Adapter.NotificationAdapter;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -28,12 +27,11 @@ import com.hemantpatel.mpfapp.R;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Objects;
 
+import Adapter.NotificationAdapter;
 import Models.MessageData;
 import Models.MissingPersonData;
-
-import static Constants.Params.DATABASE_MESSAGE_KEY;
-import static Constants.Params.DATABASE_ROOT_KEY;
 
 public class NotificationFragment extends Fragment {
     View mView;
@@ -48,7 +46,7 @@ public class NotificationFragment extends Fragment {
 
     DatabaseReference mDatabase;
     ValueEventListener mListener;
-    String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+    String userID = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
 
     @Nullable
     @Override
@@ -66,6 +64,7 @@ public class NotificationFragment extends Fragment {
         mProgressBar = mView.findViewById(R.id.notification_load_progress);
 
         mListener = new ValueEventListener() {
+            @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (mPersonDataList.size() != 0 && mMessageData.size() != 0) {
@@ -84,9 +83,9 @@ public class NotificationFragment extends Fragment {
                     MissingPersonData data = snap.getValue(MissingPersonData.class);
                     mPersonDataList.add(data);
                     int i = 1;
-                    for (DataSnapshot msgs : snap.child(DATABASE_MESSAGE_KEY).getChildren()) {
+                    for (DataSnapshot messages : snap.child(DATABASE_MESSAGE_KEY).getChildren()) {
                         if (i == snap.child(DATABASE_MESSAGE_KEY).getChildrenCount()) {
-                            MessageData tempData = msgs.getValue(MessageData.class);
+                            MessageData tempData = messages.getValue(MessageData.class);
                             mMessageData.put(data.getName(), tempData);
                         }
                         i++;
