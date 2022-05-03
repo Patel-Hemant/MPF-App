@@ -4,6 +4,7 @@ import static Constants.Params.DATABASE_ROOT_KEY;
 import static Constants.Params.STORAGE_ROOT_KEY;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.net.Uri;
@@ -62,7 +63,6 @@ public class FormActivity extends AppCompatActivity {
     private TextInputEditText name, age, address, contact, missingDate, prize, description;
     private RadioGroup mGroup;
     private ArrayList<String> photo_urls;
-    private Uri mImageUri;
 
     private DatabaseReference mDatabaseReference;
     private StorageReference mStorageReference;
@@ -135,6 +135,12 @@ public class FormActivity extends AppCompatActivity {
         cancelBtn.setOnClickListener(view -> {
             if (mUploadTask.isInProgress()) {
                 mUploadTask.cancel();
+                mUploadTask.addOnCanceledListener(new OnCanceledListener() {
+                    @Override
+                    public void onCanceled() {
+
+                    }
+                });
                 dialogText.setText("Canceling....");
                 mDialogProgress.setVisibility(View.VISIBLE);
             }
@@ -167,6 +173,7 @@ public class FormActivity extends AppCompatActivity {
     private void openFileChooser() {
         Intent intent = new Intent();
         intent.setType("image/*");
+        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
         intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(intent, PICK_IMAGE_REQUEST);
     }
@@ -228,12 +235,21 @@ public class FormActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == PICK_IMAGE_REQUEST && data != null && resultCode == RESULT_OK && data.getData() != null) {
+        if (requestCode == PICK_IMAGE_REQUEST && data != null && resultCode == Activity.RESULT_OK) {
+            if (data.getClipData() != null) {
+                // chosen multiple images
+                int count = data.getClipData().getItemCount();
+                for (int i = 0; i < count; i++) {
+                    Uri cur_uri = data.getClipData().getItemAt(i).getUri();
+                    addImgFile("name", cur_uri);
+                }
+            } else {
+                // chosen single image
+                Uri cur_uri = data.getData();
+                addImgFile("name", cur_uri);
+            }
 
-            mImageUri = data.getData();
             mUploadBtn.setEnabled(true);
-            addImgFile("name", mImageUri);
-
             mRecyclerView.post(new Runnable() {
                 @SuppressLint("NotifyDataSetChanged")
                 @Override
@@ -283,7 +299,7 @@ public class FormActivity extends AppCompatActivity {
             return false;
         }
 
-        if (imgList.isEmpty()){
+        if (imgList.isEmpty()) {
             Toast.makeText(FormActivity.this, "Please select at least 1 image", Toast.LENGTH_SHORT).show();
             return false;
         }
