@@ -126,11 +126,10 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
     private void SignUpUser(String email, String password) {
-
         mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
             mProgressBar.setVisibility(View.GONE);
             if (task.isSuccessful()) {
-                startActivity(new Intent(SignUpActivity.this, MainActivity.class));
+                startActivity(new Intent(SignUpActivity.this, StoreMyLocationActivity.class));
                 finish();
             } else {
                 Toast.makeText(SignUpActivity.this, Objects.requireNonNull(task.getException()).getMessage(), Toast.LENGTH_SHORT).show();
@@ -143,7 +142,7 @@ public class SignUpActivity extends AppCompatActivity {
         super.onStart();
         // Check if user is signed in (non-null) and update UI accordingly.
         if (mAuth.getCurrentUser() != null) {
-            startActivity(new Intent(SignUpActivity.this, MainActivity.class));
+            startActivity(new Intent(SignUpActivity.this, StoreMyLocationActivity.class));
             finish();
         }
     }

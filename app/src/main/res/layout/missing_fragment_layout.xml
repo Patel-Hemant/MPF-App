@@ -23,6 +23,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:indeterminate="true"
+        android:visibility="visible"
         android:indeterminateTint="@color/mycolor1"
         android:indeterminateTintMode="src_atop"
         app:layout_constraintStart_toStartOf="parent"

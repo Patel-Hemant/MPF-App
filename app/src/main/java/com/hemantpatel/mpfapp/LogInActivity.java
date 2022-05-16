@@ -31,7 +31,6 @@ public class LogInActivity extends AppCompatActivity {
     @SuppressLint("UseSwitchCompatOrMaterialCode")
     private Switch mSwitch;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,7 +81,7 @@ public class LogInActivity extends AppCompatActivity {
         mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
             mProgressBar.setVisibility(View.GONE);
             if (task.isSuccessful()) {
-                startActivity(new Intent(LogInActivity.this, MainActivity.class));
+                startActivity(new Intent(LogInActivity.this, StoreMyLocationActivity.class));
                 finish();
             } else {
                 Toast.makeText(LogInActivity.this, Objects.requireNonNull(task.getException()).getMessage(), Toast.LENGTH_SHORT).show();

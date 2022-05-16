@@ -2,6 +2,7 @@ package Adapter;
 
 import static Constants.Params.DATA_TRANSFER_KEY;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -19,17 +20,21 @@ import com.bumptech.glide.request.RequestOptions;
 import com.hemantpatel.mpfapp.MissingPersonDetailActivity;
 import com.hemantpatel.mpfapp.R;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
+import Constants.DistanceCalculator;
+import Models.LocationData;
 import Models.MissingPersonData;
 
 public class MissingListAdapter extends RecyclerView.Adapter<MissingListAdapter.MyViewHolder> {
     Context mContext;
     ArrayList<MissingPersonData> mList;
+    DecimalFormat df = new DecimalFormat("#.###");
 
-    public MissingListAdapter(Context context, ArrayList<MissingPersonData> list) {
-        mContext = context;
-        mList = list;
+    public MissingListAdapter(Context mContext, ArrayList<MissingPersonData> mList) {
+        this.mContext = mContext;
+        this.mList = mList;
     }
 
     @NonNull
@@ -41,14 +46,15 @@ public class MissingListAdapter extends RecyclerView.Adapter<MissingListAdapter.
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull MyViewHolder holder, @SuppressLint("RecyclerView") int position) {
         MissingPersonData data = mList.get(position);
 
         holder.mName.setText(data.getName());
         holder.mAge.setText(String.format("Age: %s", data.getAge()));
         holder.mGender.setText(String.format("Gender: %s", data.getGender()));
         holder.mMissingDate.setText(String.format("missing date : %s", data.getMissing_date()));
-        holder.mPrize.setText(String.format("Prize: %s", mList.get(position).getPrize()));
+        holder.mPrize.setText(String.format("Prize: %s", data.getPrize()));
+        holder.mDistance.setText(String.format("Distance : %s Km", df.format(data.getLocationData().getDistance())));
 
         Glide.with(mContext).applyDefaultRequestOptions(new RequestOptions().placeholder(R.drawable.ic_person)).load(mList.get(position).getPhoto_urls().get(0)).into(holder.mMissingImage);
 
@@ -74,6 +80,7 @@ public class MissingListAdapter extends RecyclerView.Adapter<MissingListAdapter.
         private TextView mGender;
         private TextView mMissingDate;
         private TextView mPrize;
+        private TextView mDistance;
         private Button detailBtn;
 
         public MyViewHolder(@NonNull View itemView) {
@@ -85,6 +92,7 @@ public class MissingListAdapter extends RecyclerView.Adapter<MissingListAdapter.
             mGender = itemView.findViewById(R.id.gender);
             mMissingDate = itemView.findViewById(R.id.missing_date);
             mPrize = itemView.findViewById(R.id.meet_prize);
+            mDistance = itemView.findViewById(R.id.distance);
             detailBtn = itemView.findViewById(R.id.see_detail);
         }
     }

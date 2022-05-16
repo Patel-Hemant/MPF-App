@@ -1,12 +1,16 @@
 package com.hemantpatel.mpfapp;
 
+import static Constants.Params.ADDRESS_KEY;
 import static Constants.Params.DATABASE_ROOT_KEY;
+import static Constants.Params.LATITUDE_KEY;
+import static Constants.Params.LONGITUDE_KEY;
 import static Constants.Params.STORAGE_ROOT_KEY;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -50,13 +54,14 @@ import java.util.Objects;
 
 import Adapter.PhotoListAdapter;
 import Models.ImgDetailFile;
+import Models.LocationData;
 import Models.MissingPersonData;
 
 public class FormActivity extends AppCompatActivity {
     private static final int PICK_IMAGE_REQUEST = 456;
     private RecyclerView mRecyclerView;
     private PhotoListAdapter mAdapter;
-    private Button mFileChooserBtn, mUploadBtn, cancelBtn;
+    private Button mFileChooserBtn, mUploadBtn, cancelBtn, useMyAddBtn;
     private ProgressBar mDialogProgress;
 
     private ArrayList<ImgDetailFile> imgList;
@@ -76,6 +81,8 @@ public class FormActivity extends AppCompatActivity {
     private TextView dialogText;
     private LinearProgressIndicator dialogProgress;
     private ImageView dialogImg;
+
+    SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,7 +124,7 @@ public class FormActivity extends AppCompatActivity {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(FormActivity.this, RecyclerView.HORIZONTAL, false));
     }
 
-    @SuppressLint({"ClickableViewAccessibility", "SetTextI18n"})
+    @SuppressLint({"ClickableViewAccessibility", "SetTextI18n", "WrongConstant"})
     private void initViews() {
         mAlertDialog = new Dialog(FormActivity.this);
         mAlertDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -130,6 +137,8 @@ public class FormActivity extends AppCompatActivity {
         dialogImg = mAlertDialog.findViewById(R.id.dialog_img);
         mDialogProgress = mAlertDialog.findViewById(R.id.progressDialog);
         mDialogProgress.setVisibility(View.GONE);
+
+        sharedPreferences = getSharedPreferences("MySharedPref", MODE_APPEND);
 
         cancelBtn = mAlertDialog.findViewById(R.id.cancelBtn);
         cancelBtn.setOnClickListener(view -> {
@@ -145,6 +154,13 @@ public class FormActivity extends AppCompatActivity {
                 mDialogProgress.setVisibility(View.VISIBLE);
             }
         });
+
+        useMyAddBtn = findViewById(R.id.use_my_location_btn);
+        useMyAddBtn.setOnClickListener(v -> {
+            String addressData = sharedPreferences.getString(ADDRESS_KEY, "Address is Not Available!");
+            address.setText(addressData);
+        });
+
 
         name = findViewById(R.id.msg_text_box);
         age = findViewById(R.id.missing_person_age);
@@ -311,6 +327,9 @@ public class FormActivity extends AppCompatActivity {
         String prizeValue = Objects.requireNonNull(prize.getText()).toString().trim();
         if (prizeValue.equals("")) prizeValue = "00.00";
 
+        double latitude = Double.parseDouble(sharedPreferences.getString(LATITUDE_KEY, "0.0f"));
+        double longitude = Double.parseDouble(sharedPreferences.getString(LONGITUDE_KEY, "0.0f"));
+
         RadioButton gender = findViewById(mGroup.getCheckedRadioButtonId());
         MissingPersonData data = new MissingPersonData(USER_ID,
                 Objects.requireNonNull(name.getText()).toString(),
@@ -319,9 +338,10 @@ public class FormActivity extends AppCompatActivity {
                 Objects.requireNonNull(address.getText()).toString(),
                 Objects.requireNonNull(missingDate.getText()).toString(),
                 prize.getText().toString(),
-                Objects.requireNonNull(contact.getText()).toString() + "\n" + FirebaseAuth.getInstance().getCurrentUser().getEmail(),
+                Objects.requireNonNull(contact.getText()).toString() + "\n" + Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getEmail(),
                 photo_urls,
-                Objects.requireNonNull(description.getText()).toString());
+                Objects.requireNonNull(description.getText()).toString(),
+                new LocationData(latitude, longitude));
 
         mDatabaseReference.child(USER_ID).child(data.getName()).setValue(data).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override

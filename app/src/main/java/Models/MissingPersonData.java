@@ -5,20 +5,21 @@ import java.util.ArrayList;
 
 public class MissingPersonData implements Serializable {
     private String userId;
-    private String name;//
-    private String age;//
+    private String name;
+    private String age;
     private String gender;
-    private String address;//
-    private String missing_date;//
-    private String prize;//
+    private String address;
+    private String missing_date;
+    private String prize;
     private String contacts;
     private ArrayList<String> photo_urls;
-    private String description;//
+    private String description;
+    private LocationData locationData;
 
     public MissingPersonData() {
     }
 
-    public MissingPersonData(String userId, String name, String age, String gender, String address, String missing_date, String prize, String contacts, ArrayList<String> photo_urls, String description) {
+    public MissingPersonData(String userId, String name, String age, String gender, String address, String missing_date, String prize, String contacts, ArrayList<String> photo_urls, String description, LocationData location_data) {
         this.userId = userId;
         this.name = name;
         this.age = age;
@@ -29,6 +30,7 @@ public class MissingPersonData implements Serializable {
         this.photo_urls = photo_urls;
         this.description = description;
         this.contacts = contacts;
+        this.locationData = location_data;
     }
 
     public String getUserId() {
@@ -109,5 +111,13 @@ public class MissingPersonData implements Serializable {
 
     public void setContacts(String contacts) {
         this.contacts = contacts;
+    }
+
+    public LocationData getLocationData() {
+        return locationData;
+    }
+
+    public void setLocationData(LocationData locationData) {
+        this.locationData = locationData;
     }
 }

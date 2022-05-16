@@ -104,7 +104,7 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
-                android:id="@+id/textView6"
+                android:id="@+id/addressTitle"
                 android:layout_width="0sp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
@@ -120,9 +120,9 @@
                 android:layout_width="0sp"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                app:layout_constraintEnd_toEndOf="@+id/textView6"
-                app:layout_constraintStart_toStartOf="@+id/textView6"
-                app:layout_constraintTop_toBottomOf="@+id/textView6">
+                app:layout_constraintEnd_toEndOf="@+id/addressTitle"
+                app:layout_constraintStart_toStartOf="@+id/addressTitle"
+                app:layout_constraintTop_toBottomOf="@+id/addressTitle">
 
                 <RadioButton
                     android:id="@+id/male_rdo_btn"

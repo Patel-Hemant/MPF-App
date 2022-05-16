@@ -87,12 +87,12 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/textInputLayout4"
-                android:layout_width="match_parent"
+                android:layout_width="0sp"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="10sp"
                 android:layout_marginTop="8dp"
-                android:hint="address*"
-                app:layout_constraintEnd_toEndOf="parent"
+                android:hint="Address*"
+                app:layout_constraintEnd_toStartOf="@+id/use_my_location_btn"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textInputLayout3">
 
@@ -100,17 +100,28 @@
                     android:id="@+id/missing_person_address"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
-
             </com.google.android.material.textfield.TextInputLayout>
 
+            <Button
+                android:id="@+id/use_my_location_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="#65680D"
+                android:drawableRight="@drawable/ic_baseline_my_location"
+                android:text="use my\nlocation"
+                app:backgroundTint="@color/mycolor1"
+                app:layout_constraintEnd_toEndOf="@+id/textInputLayout3"
+                app:layout_constraintTop_toTopOf="@+id/textInputLayout4"
+                tools:targetApi="lollipop" />
+
             <TextView
-                android:id="@+id/textView6"
+                android:id="@+id/addressTitle"
                 android:layout_width="0sp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:text="Select gender : "
                 android:textSize="16sp"
-                app:layout_constraintEnd_toEndOf="@+id/textInputLayout4"
+                app:layout_constraintEnd_toEndOf="@+id/textInputLayout3"
                 app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="@+id/textInputLayout4"
                 app:layout_constraintTop_toBottomOf="@+id/textInputLayout4" />
@@ -120,9 +131,9 @@
                 android:layout_width="0sp"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                app:layout_constraintEnd_toEndOf="@+id/textView6"
-                app:layout_constraintStart_toStartOf="@+id/textView6"
-                app:layout_constraintTop_toBottomOf="@+id/textView6">
+                app:layout_constraintEnd_toEndOf="@+id/addressTitle"
+                app:layout_constraintStart_toStartOf="@+id/addressTitle"
+                app:layout_constraintTop_toBottomOf="@+id/addressTitle">
 
                 <RadioButton
                     android:id="@+id/rdo_male"
@@ -218,7 +229,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="10sp"
                 android:layout_marginTop="8dp"
-                android:hint="write all description*"
+                android:hint="Write all description*"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textInputLayout6">

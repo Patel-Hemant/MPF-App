@@ -2,11 +2,11 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    app:cardCornerRadius="10sp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     android:layout_margin="5sp"
     app:cardBackgroundColor="#FDE0A7"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    app:cardCornerRadius="10sp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -16,13 +16,14 @@
         <ImageView
             android:id="@+id/missing_person_image"
             android:layout_width="0sp"
-            android:layout_height="150sp"
+            android:layout_height="0sp"
             android:layout_marginEnd="8dp"
             android:scaleType="centerCrop"
             android:src="@drawable/profile"
+            app:layout_constraintBottom_toBottomOf="@+id/see_detail"
             app:layout_constraintEnd_toStartOf="@+id/guideline2"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="@+id/missing_name" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline2"
@@ -51,10 +52,9 @@
             android:layout_width="0sp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="4dp"
             android:maxLines="1"
             android:text="Age: 23"
-            app:layout_constraintBottom_toTopOf="@+id/gender"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/missing_person_image"
@@ -65,7 +65,7 @@
             android:layout_width="0sp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="4dp"
             android:maxLines="1"
             android:text="Gender: male"
             app:layout_constraintEnd_toEndOf="parent"
@@ -78,7 +78,7 @@
             android:layout_width="0sp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="4dp"
             android:maxLines="1"
             android:text="Missing Date: 03-02-2021"
             app:layout_constraintEnd_toEndOf="parent"
@@ -91,23 +91,37 @@
             android:layout_width="0sp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="4dp"
             android:maxLines="1"
-            android:textStyle="bold"
             android:text="Prize : 53000 Rs"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/missing_person_image"
             app:layout_constraintTop_toBottomOf="@+id/missing_date" />
 
-        <Button
-            android:id="@+id/see_detail"
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/distance"
+            android:layout_width="0sp"
             android:layout_height="wrap_content"
-            android:backgroundTint="#65680D"
-            android:text="see Detail"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="4dp"
+            android:maxLines="1"
+            android:text="Distance : 2.5 Km"
+            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/missing_person_image"
-            app:layout_constraintTop_toBottomOf="@+id/missing_person_image"
+            app:layout_constraintTop_toBottomOf="@+id/meet_prize" />
+
+        <Button
+            android:id="@+id/see_detail"
+            android:layout_width="0sp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:backgroundTint="#65680D"
+            android:text="See Detail"
+            app:backgroundTint="@color/mycolor1"
+            app:layout_constraintEnd_toEndOf="@+id/distance"
+            app:layout_constraintStart_toStartOf="@+id/distance"
+            app:layout_constraintTop_toBottomOf="@+id/distance"
             tools:targetApi="lollipop" />
 
 

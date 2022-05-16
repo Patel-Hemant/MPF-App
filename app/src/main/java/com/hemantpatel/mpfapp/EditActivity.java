@@ -19,6 +19,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Objects;
 
+import Models.LocationData;
 import Models.MissingPersonData;
 
 public class EditActivity extends AppCompatActivity {
@@ -52,7 +53,8 @@ public class EditActivity extends AppCompatActivity {
                 Objects.requireNonNull(prize.getText()).toString(),
                 Objects.requireNonNull(contact.getText()).toString() + "\n" + Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getEmail(),
                 mOldData.getPhoto_urls(),
-                Objects.requireNonNull(description.getText()).toString());
+                Objects.requireNonNull(description.getText()).toString(),
+                new LocationData(0.0f, 0.0f));
 
         if (mOldData.getName().equals(mUpdateData.getName())) {
             mDatabaseReference.child(USER_ID).child(mOldData.getName()).setValue(mUpdateData).addOnCompleteListener(task -> {
