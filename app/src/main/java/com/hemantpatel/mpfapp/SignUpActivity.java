@@ -20,9 +20,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
+import com.hemantpatel.mpfapp.util.InternetChecker;
 
 import java.util.Objects;
-
 
 public class SignUpActivity extends AppCompatActivity {
     TextInputEditText mEmail, mPassword, mConfirmPassword;
@@ -30,6 +30,7 @@ public class SignUpActivity extends AppCompatActivity {
     TextView logInText;
     TextWatcher mTextWatcher;
     ProgressBar mProgressBar;
+    InternetChecker internetChecker;
 
     private FirebaseAuth mAuth;
     @SuppressLint("UseSwitchCompatOrMaterialCode")
@@ -102,7 +103,6 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
     private boolean checkData(String email, String password, String re_password) {
-
         if (!email.equals("") && !password.equals("")) {
             if (password.equals(re_password)) {
                 return true;
@@ -110,7 +110,6 @@ public class SignUpActivity extends AppCompatActivity {
                 mConfirmPassword.setError("your password is no matched!");
                 return false;
             }
-
         } else {
             if (email.equals("")) {
                 mEmail.setError("please write your email");
@@ -126,6 +125,7 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
     private void SignUpUser(String email, String password) {
+        if (!internetChecker.isOnline()) return;
         mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
             mProgressBar.setVisibility(View.GONE);
             if (task.isSuccessful()) {
@@ -148,6 +148,8 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
     public void initViews() {
+        internetChecker = new InternetChecker(SignUpActivity.this);
+
         mAuth = FirebaseAuth.getInstance();
 
         mProgressBar = findViewById(R.id.progressBar2);

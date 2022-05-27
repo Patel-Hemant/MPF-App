@@ -18,12 +18,13 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
+import com.hemantpatel.mpfapp.util.InternetChecker;
 
 import java.util.Objects;
 
 public class LogInActivity extends AppCompatActivity {
     private TextInputEditText mEmail, mPassword;
-
+    private InternetChecker internetChecker;
     private Button logInBtn;
     private TextView signUpText, resetText;
     private ProgressBar mProgressBar;
@@ -78,6 +79,7 @@ public class LogInActivity extends AppCompatActivity {
     }
 
     private void LogInUser(String email, String password) {
+        if (!internetChecker.isOnline()) return;
         mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
             mProgressBar.setVisibility(View.GONE);
             if (task.isSuccessful()) {
@@ -90,6 +92,8 @@ public class LogInActivity extends AppCompatActivity {
     }
 
     private void initViews() {
+        internetChecker = new InternetChecker(LogInActivity.this);
+
         mAuth = FirebaseAuth.getInstance();
         mSwitch = findViewById(R.id.switch12);
 

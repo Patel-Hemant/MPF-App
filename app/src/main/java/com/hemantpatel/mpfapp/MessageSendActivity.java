@@ -23,6 +23,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.hemantpatel.mpfapp.util.InternetChecker;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -35,6 +36,7 @@ import Models.MissingPersonData;
 public class MessageSendActivity extends AppCompatActivity {
     private RecyclerView mRecyclerView;
     private MessageListAdapter mAdapter;
+    private InternetChecker internetChecker;
 
     private ArrayList<MessageData> mMsgList;
 
@@ -87,6 +89,8 @@ public class MessageSendActivity extends AppCompatActivity {
     }
 
     private void initViews() {
+        internetChecker = new InternetChecker(MessageSendActivity.this);
+
         MissingPersonData mPersonData = (MissingPersonData) getIntent().getSerializableExtra(DATA_TRANSFER_KEY);
         mMsgDatabase = FirebaseDatabase.getInstance().getReference().child(DATABASE_ROOT_KEY).child(mPersonData.getUserId()).child(mPersonData.getName()).child(DATABASE_MESSAGE_KEY);
         mMsgList = new ArrayList<>();
@@ -110,7 +114,7 @@ public class MessageSendActivity extends AppCompatActivity {
     }
 
     public void sendMsg(String email, String msg) {
-        if (!msg.trim().equals("")) {
+        if (!msg.trim().equals("") && internetChecker.isOnline()) {
             MessageData message = new MessageData(email, msg);
             mMsgDatabase.push().setValue(message);
         }

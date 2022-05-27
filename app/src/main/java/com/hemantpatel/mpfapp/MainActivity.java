@@ -1,6 +1,5 @@
 package com.hemantpatel.mpfapp;
 
-
 import static Constants.DistanceCalculator.getDistanceFromLatLonInKm;
 import static Constants.Params.DATABASE_ROOT_KEY;
 import static Constants.Params.LATITUDE_KEY;
@@ -12,8 +11,11 @@ import android.annotation.SuppressLint;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.ComponentName;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -25,6 +27,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.hemantpatel.mpfapp.util.InternetChecker;
 
 import java.util.ArrayList;
 
@@ -35,6 +38,8 @@ import Fragments.NotificationFragment;
 import Models.MissingPersonData;
 
 public class MainActivity extends AppCompatActivity {
+    public InternetChecker mInternetChecker;
+
     BottomNavigationView mBottomNavigationView;
     ValueEventListener mListener;
     DatabaseReference mDatabaseReference;

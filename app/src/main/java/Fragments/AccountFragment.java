@@ -34,6 +34,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.hemantpatel.mpfapp.LogInActivity;
 import com.hemantpatel.mpfapp.R;
 import com.hemantpatel.mpfapp.ResetPasswordActivity;
+import com.hemantpatel.mpfapp.util.InternetChecker;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -46,6 +47,7 @@ public class AccountFragment extends Fragment {
     TextView userEmail, yourListTitle, emailVerifyStatus;
     Button logOutBtn, resetButton, emailVerifyBtn;
     ImageView posterImg;
+    InternetChecker internetChecker;
 
     AlertDialog verifyDialog;
     Handler mHandler;
@@ -154,6 +156,7 @@ public class AccountFragment extends Fragment {
     public void initViews(Context context) {
         mAuth = FirebaseAuth.getInstance();
         mReference = FirebaseDatabase.getInstance().getReference().child(DATABASE_ROOT_KEY).child(Objects.requireNonNull(mAuth.getCurrentUser()).getUid());
+        internetChecker = new InternetChecker(context);
 
         userEmail = mView.findViewById(R.id.user_email);
         String email = mAuth.getCurrentUser().getEmail();
@@ -209,7 +212,9 @@ public class AccountFragment extends Fragment {
     }
 
     public void deleteData(int position) {
-        mReference.child(mList.get(position).getName()).removeValue();
-        mList.remove(position);
+        if (internetChecker.isOnline()){
+            mReference.child(mList.get(position).getName()).removeValue();
+            mList.remove(position);
+        }
     }
 }

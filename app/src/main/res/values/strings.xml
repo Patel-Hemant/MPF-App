@@ -32,4 +32,5 @@
     <string name="we_are_waiting_for_your_verification">We are waiting for your Verification</string>
     <string name="reset_password">Reset Password</string>
     <string name="log_out">log Out</string>
+    <string name="please_check_your_internet_connection">Please Check Your Internet Connection!</string>
 </resources>

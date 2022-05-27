@@ -48,6 +48,7 @@ import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
+import com.hemantpatel.mpfapp.util.InternetChecker;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -82,6 +83,8 @@ public class FormActivity extends AppCompatActivity {
     private LinearProgressIndicator dialogProgress;
     private ImageView dialogImg;
 
+    private InternetChecker internetChecker;
+
     SharedPreferences sharedPreferences;
 
     @Override
@@ -109,7 +112,7 @@ public class FormActivity extends AppCompatActivity {
         mUploadBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (checkData()) {
+                if (checkData() && internetChecker.isOnline()) {
                     uploadFile();
                     mAlertDialog.show();
                 }
@@ -137,6 +140,8 @@ public class FormActivity extends AppCompatActivity {
         dialogImg = mAlertDialog.findViewById(R.id.dialog_img);
         mDialogProgress = mAlertDialog.findViewById(R.id.progressDialog);
         mDialogProgress.setVisibility(View.GONE);
+
+        internetChecker = new InternetChecker(FormActivity.this);
 
         sharedPreferences = getSharedPreferences("MySharedPref", MODE_APPEND);
 

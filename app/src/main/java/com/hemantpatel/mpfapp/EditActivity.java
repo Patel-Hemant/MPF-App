@@ -16,6 +16,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.hemantpatel.mpfapp.util.InternetChecker;
 
 import java.util.Objects;
 
@@ -28,6 +29,7 @@ public class EditActivity extends AppCompatActivity {
     private Button updateBtn;
     private MissingPersonData mOldData;
     private DatabaseReference mDatabaseReference;
+    private InternetChecker internetChecker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +45,8 @@ public class EditActivity extends AppCompatActivity {
 
     // update data
     private void updateData() {
+        if (!internetChecker.isOnline()) return;
+
         RadioButton gender = findViewById(mGroup.getCheckedRadioButtonId());
         MissingPersonData mUpdateData = new MissingPersonData(USER_ID,
                 Objects.requireNonNull(name.getText()).toString(),
@@ -98,5 +102,6 @@ public class EditActivity extends AppCompatActivity {
         description = findViewById(R.id.description);
         mGroup = findViewById(R.id.radioGroup);
         updateBtn = findViewById(R.id.update_btn);
+        internetChecker = new InternetChecker(EditActivity.this);
     }
 }
