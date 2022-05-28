@@ -30,7 +30,8 @@ android {
 }
 
 dependencies {
-    
+    def lottieVersion = "5.0.3"
+    implementation "com.airbnb.android:lottie:$lottieVersion"
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     implementation platform('com.google.firebase:firebase-bom:26.6.0')

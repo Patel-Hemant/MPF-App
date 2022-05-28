@@ -38,7 +38,10 @@ public class InternetChecker {
         AlertDialog dialog = builder.create();
 
         Button check_btn = view.findViewById(R.id.internet_check_btn);
-        check_btn.setOnClickListener(v -> mContext.startActivity(new Intent(android.provider.Settings.ACTION_DATA_ROAMING_SETTINGS)));
+        check_btn.setOnClickListener(v -> {
+            mContext.startActivity(new Intent(android.provider.Settings.ACTION_DATA_ROAMING_SETTINGS));
+            dialog.cancel();
+        });
 
         Button close_btn = view.findViewById(R.id.close_btn);
         close_btn.setOnClickListener(v -> dialog.cancel());

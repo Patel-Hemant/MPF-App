@@ -20,6 +20,7 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -39,7 +40,7 @@ public class MissingFragment extends Fragment {
     RecyclerView mRecyclerView;
     public MissingListAdapter mAdapter;
     public ProgressBar mProgressBar;
-    public ImageView mDataNotAvailable;
+    public LottieAnimationView mDataNotAvailable;
     public InternetChecker mInternetChecker;
 
     @SuppressLint("WrongConstant")

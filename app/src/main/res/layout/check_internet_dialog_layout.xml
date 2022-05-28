@@ -22,19 +22,19 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
+    <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/imageView6"
         android:layout_width="0sp"
         android:layout_height="150sp"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginBottom="16dp"
-        android:src="@drawable/my_profile_img"
+        android:layout_marginHorizontal="20sp"
+        android:layout_marginVertical="16sp"
         app:layout_constraintBottom_toTopOf="@+id/internet_check_btn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView6" />
+        app:layout_constraintTop_toBottomOf="@+id/textView6"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/network_not_available_lottie" />
 
     <Button
         android:id="@+id/internet_check_btn"
