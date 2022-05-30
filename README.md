@@ -7,7 +7,7 @@ The purpose of this application is to find missing people as soon as possible wi
 ## Download
 > You can simply Download the App and use in your device.
 
-<a href="https://github.com/Patel-Hemant/MPF-App/releases/"><img src="https://i.imgur.com/kDz2JR7.png" align="left" width="150px" height="auto"> </a>
+<a href="https://github.com/Patel-Hemant/MPF-App/releases/download/v1.2-alpha/MPF.APP.alpha.v1.2.apk"><img src="https://i.imgur.com/kDz2JR7.png" align="left" width="150px" height="auto"> </a>
 <br>
 
 ## Permissions:
