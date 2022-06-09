@@ -1,9 +1,13 @@
 package com.hemantpatel.mpfapp;
 
+import static Constants.Params.ADDRESS_CODE;
 import static Constants.Params.ADDRESS_KEY;
+import static Constants.Params.ADDRESS_REQUEST_CODE;
 import static Constants.Params.DATABASE_ROOT_KEY;
 import static Constants.Params.LATITUDE_KEY;
+import static Constants.Params.LAT_CODE;
 import static Constants.Params.LONGITUDE_KEY;
+import static Constants.Params.LON_CODE;
 import static Constants.Params.STORAGE_ROOT_KEY;
 
 import android.annotation.SuppressLint;
@@ -29,6 +33,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityOptionsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -67,6 +72,7 @@ public class FormActivity extends AppCompatActivity {
 
     private ArrayList<ImgDetailFile> imgList;
     private TextInputEditText name, age, address, contact, missingDate, prize, description;
+    private LocationData mLocationData;
     private RadioGroup mGroup;
     private ArrayList<String> photo_urls;
 
@@ -152,7 +158,7 @@ public class FormActivity extends AppCompatActivity {
                 mUploadTask.addOnCanceledListener(new OnCanceledListener() {
                     @Override
                     public void onCanceled() {
-
+                        Toast.makeText(FormActivity.this, "Cancelled!", Toast.LENGTH_SHORT).show();
                     }
                 });
                 dialogText.setText("Canceling....");
@@ -162,20 +168,38 @@ public class FormActivity extends AppCompatActivity {
 
         useMyAddBtn = findViewById(R.id.use_my_location_btn);
         useMyAddBtn.setOnClickListener(v -> {
+            double latitude = Double.parseDouble(sharedPreferences.getString(LATITUDE_KEY, "0.0f"));
+            double longitude = Double.parseDouble(sharedPreferences.getString(LONGITUDE_KEY, "0.0f"));
+            mLocationData = new LocationData(latitude, longitude);
+
             String addressData = sharedPreferences.getString(ADDRESS_KEY, "Address is Not Available!");
             address.setText(addressData);
         });
 
-
-        name = findViewById(R.id.msg_text_box);
+        name = findViewById(R.id.address_text_box);
         age = findViewById(R.id.missing_person_age);
-        address = findViewById(R.id.missing_person_address);
         contact = findViewById(R.id.missing_person_contact_number);
         missingDate = findViewById(R.id.missing_person_missing_date);
         prize = findViewById(R.id.prize);
         description = findViewById(R.id.description);
         mGroup = findViewById(R.id.radioGroup);
         photo_urls = new ArrayList<>();
+        address = findViewById(R.id.missing_person_address);
+
+        address.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_UP) {
+                    Intent intent = new Intent(FormActivity.this, AddressSelectActivity.class);
+                    ActivityOptionsCompat options = null;
+                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+                        options = ActivityOptionsCompat.makeSceneTransitionAnimation(FormActivity.this, address, address.getTransitionName());
+                    }
+                    startActivityForResult(intent, ADDRESS_REQUEST_CODE, options.toBundle());
+                }
+                return false;
+            }
+        });
 
         // scrolling not work in EditText inside Scrollview //EditText not scrollable inside ScrollView
         // disable parent interaction when editText is touched or Scroll
@@ -256,6 +280,7 @@ public class FormActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        // Image file chooser
         if (requestCode == PICK_IMAGE_REQUEST && data != null && resultCode == Activity.RESULT_OK) {
             if (data.getClipData() != null) {
                 // chosen multiple images
@@ -279,6 +304,14 @@ public class FormActivity extends AppCompatActivity {
                     mRecyclerView.smoothScrollToPosition(imgList.size() - 1);
                 }
             });
+        } else if (requestCode == ADDRESS_REQUEST_CODE && resultCode == RESULT_OK && data != null) {
+            // Address choose activity
+            String addressData = data.getStringExtra(ADDRESS_CODE);
+            double latitude = data.getDoubleExtra(LAT_CODE, 0);
+            double longitude = data.getDoubleExtra(LON_CODE, 0);
+
+            address.setText(addressData);
+            mLocationData = new LocationData(latitude, longitude);
         }
     }
 
@@ -315,6 +348,11 @@ public class FormActivity extends AppCompatActivity {
             x++;
         }
 
+        if (mLocationData == null) {
+            Toast.makeText(this, "Please Add Your Address", Toast.LENGTH_SHORT).show();
+            x++;
+        }
+
         if (mGroup.getCheckedRadioButtonId() != R.id.rdo_male && mGroup.getCheckedRadioButtonId() != R.id.rdo_female && mGroup.getCheckedRadioButtonId() != R.id.rdo_other) {
             Toast.makeText(FormActivity.this, "Please Select Gender!", Toast.LENGTH_SHORT).show();
             return false;
@@ -332,9 +370,6 @@ public class FormActivity extends AppCompatActivity {
         String prizeValue = Objects.requireNonNull(prize.getText()).toString().trim();
         if (prizeValue.equals("")) prizeValue = "00.00";
 
-        double latitude = Double.parseDouble(sharedPreferences.getString(LATITUDE_KEY, "0.0f"));
-        double longitude = Double.parseDouble(sharedPreferences.getString(LONGITUDE_KEY, "0.0f"));
-
         RadioButton gender = findViewById(mGroup.getCheckedRadioButtonId());
         MissingPersonData data = new MissingPersonData(USER_ID,
                 Objects.requireNonNull(name.getText()).toString(),
@@ -346,7 +381,7 @@ public class FormActivity extends AppCompatActivity {
                 Objects.requireNonNull(contact.getText()).toString() + "\n" + Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getEmail(),
                 photo_urls,
                 Objects.requireNonNull(description.getText()).toString(),
-                new LocationData(latitude, longitude));
+                mLocationData);
 
         mDatabaseReference.child(USER_ID).child(data.getName()).setValue(data).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override

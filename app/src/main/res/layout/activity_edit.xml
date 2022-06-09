@@ -60,7 +60,7 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/msg_text_box"
+                    android:id="@+id/address_text_box"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
 

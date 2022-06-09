@@ -14,6 +14,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MPFApp">
         <activity
+            android:name=".AddressSelectActivity"
+            android:exported="false" />
+        <activity
             android:name=".StoreMyLocationActivity"
             android:exported="false" />
         <activity
@@ -27,8 +30,8 @@
         <activity android:name=".SignUpActivity" />
         <activity
             android:name=".SplashScreenActivity"
-            android:screenOrientation="portrait"
             android:exported="true"
+            android:screenOrientation="portrait"
             android:theme="@style/FullScreenActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

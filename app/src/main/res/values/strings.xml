@@ -33,4 +33,6 @@
     <string name="reset_password">Reset Password</string>
     <string name="log_out">log Out</string>
     <string name="please_check_your_internet_connection">Please Check Your Internet Connection!</string>
+    <string name="type_city_district_state_country">Type ... city, district, state, country</string>
+    <string name="_2937_oliverio_drive_saint_john_67576_usa">2937 Oliverio Drive Saint John 67576 USA</string>
 </resources>

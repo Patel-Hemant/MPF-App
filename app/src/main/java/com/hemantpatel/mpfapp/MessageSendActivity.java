@@ -94,7 +94,7 @@ public class MessageSendActivity extends AppCompatActivity {
         MissingPersonData mPersonData = (MissingPersonData) getIntent().getSerializableExtra(DATA_TRANSFER_KEY);
         mMsgDatabase = FirebaseDatabase.getInstance().getReference().child(DATABASE_ROOT_KEY).child(mPersonData.getUserId()).child(mPersonData.getName()).child(DATABASE_MESSAGE_KEY);
         mMsgList = new ArrayList<>();
-        textBox = findViewById(R.id.msg_text_box);
+        textBox = findViewById(R.id.address_text_box);
 
         mAdapter = new MessageListAdapter(MessageSendActivity.this, mMsgList);
 

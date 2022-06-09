@@ -3,10 +3,19 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/AndroidStudioProjects/MPF-App/app/src/main/res/drawable/ic_baseline_add_location_alt_24.xml" value="0.1405" />
         <entry key="..\:/AndroidStudioProjects/MPF-App/app/src/main/res/layout/account_fragment_layout.xml" value="0.20416666666666666" />
+        <entry key="..\:/AndroidStudioProjects/MPF-App/app/src/main/res/layout/activity_address_select.xml" value="0.22" />
+        <entry key="..\:/AndroidStudioProjects/MPF-App/app/src/main/res/layout/activity_edit.xml" value="0.1" />
+        <entry key="..\:/AndroidStudioProjects/MPF-App/app/src/main/res/layout/activity_form.xml" value="0.20416666666666666" />
+        <entry key="..\:/AndroidStudioProjects/MPF-App/app/src/main/res/layout/activity_image_preview.xml" value="0.20416666666666666" />
+        <entry key="..\:/AndroidStudioProjects/MPF-App/app/src/main/res/layout/activity_main.xml" value="0.20416666666666666" />
+        <entry key="..\:/AndroidStudioProjects/MPF-App/app/src/main/res/layout/address_list_item.xml" value="0.16" />
         <entry key="..\:/AndroidStudioProjects/MPF-App/app/src/main/res/layout/check_internet_dialog_layout.xml" value="0.25" />
         <entry key="..\:/AndroidStudioProjects/MPF-App/app/src/main/res/layout/email_sent_dialog_layout.xml" value="0.20416666666666666" />
+        <entry key="..\:/AndroidStudioProjects/MPF-App/app/src/main/res/layout/grid_photo_layout_item.xml" value="0.20416666666666666" />
         <entry key="..\:/AndroidStudioProjects/MPF-App/app/src/main/res/layout/missing_fragment_layout.xml" value="0.20416666666666666" />
+        <entry key="..\:/AndroidStudioProjects/MPF-App/app/src/main/res/layout/upload_dialog_layout.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/hemu4/AndroidStudioProjects/MPF-App/app/src/main/res/drawable/button_bg.xml" value="0.1953125" />
         <entry key="..\:/Users/hemu4/AndroidStudioProjects/MPF-App/app/src/main/res/drawable/ic_baseline_add_location.xml" value="0.1953125" />
         <entry key="..\:/Users/hemu4/AndroidStudioProjects/MPF-App/app/src/main/res/drawable/ic_baseline_add_location_light.xml" value="0.1953125" />

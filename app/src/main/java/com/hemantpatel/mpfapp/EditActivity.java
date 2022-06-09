@@ -93,7 +93,7 @@ public class EditActivity extends AppCompatActivity {
 
     // init view with ids
     private void initView() {
-        name = findViewById(R.id.msg_text_box);
+        name = findViewById(R.id.address_text_box);
         age = findViewById(R.id.missing_person_age);
         address = findViewById(R.id.missing_person_address);
         contact = findViewById(R.id.missing_person_contact_number);
