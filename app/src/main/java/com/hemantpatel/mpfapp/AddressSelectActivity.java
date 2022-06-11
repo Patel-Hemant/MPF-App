@@ -74,6 +74,7 @@ public class AddressSelectActivity extends AppCompatActivity {
                     addressList.clear();
                     addressList.addAll(getLocationFromAddress(AddressSelectActivity.this, addressTV.getText().toString()));
                     mAdapter.notifyDataSetChanged();
+                    recyclerView.scheduleLayoutAnimation();
                 } else {
                     time++;
                     handler.postDelayed(this, 1000);
